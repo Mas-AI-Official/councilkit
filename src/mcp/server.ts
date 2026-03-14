@@ -60,10 +60,10 @@ export async function startServer(): Promise<void> {
             workers: {
               type: "array",
               items: {
-                type: "string",
-                enum: ["codex", "gemini", "local"]
+                type: "string"
               },
-              description: "Optional worker order. Defaults to the configured default_workers."
+              description:
+                "Optional worker order. Built-ins: codex, gemini, local. You can also use configured custom_workers names."
             },
             output_format: {
               type: "string",

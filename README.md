@@ -9,6 +9,7 @@ The bundled server is named `council-hub` and exposes one primary MCP tool: `cou
 - Adds a Claude Code skill at `/councilkit:run`
 - Starts the bundled `council-hub` MCP server automatically through `.mcp.json`
 - Runs `codex` and `gemini` in parallel in `council` mode, or just the first selected worker in `single` mode
+- Supports custom worker CLIs through settings (`antigravity`, `openclaw`, or any local command)
 - Captures `stdout`, `stderr`, exit state, parsed JSON when available, disagreement signals, and suggested next checks
 - Persists each run to local disk at `~/.councilkit/runs/<timestamp>.json` by default
 
@@ -63,6 +64,18 @@ Edit [`councilkit.settings.json`](./councilkit.settings.json) or create `~/.coun
   "codex": {
     "use_output_schema": true
   },
+  "custom_workers": {
+    "antigravity": {
+      "command": "antigravity run \"{task}\"",
+      "timeout_ms": 300000,
+      "output_format": "auto"
+    },
+    "openclaw": {
+      "command": "openclaw \"{task}\"",
+      "timeout_ms": 300000,
+      "output_format": "auto"
+    }
+  },
   "persistence": {
     "enabled": true,
     "directory": "~/.councilkit/runs"
@@ -71,6 +84,8 @@ Edit [`councilkit.settings.json`](./councilkit.settings.json) or create `~/.coun
 ```
 
 `local_command` is optional. If you set it, `local` can be included in the worker list. If the command contains `{task}`, councilkit substitutes the task into the command string; otherwise it appends the task as the final argument.
+
+`custom_workers` lets you register any additional CLI worker by name. Those names become valid values in `workers` for `council_run`.
 
 ## Enable In Claude Code
 
@@ -125,7 +140,7 @@ node ./bin/council-hub.js
 {
   "task": "string",
   "mode": "single | council",
-  "workers": ["codex", "gemini", "local"],
+  "workers": ["codex", "gemini", "local", "antigravity", "openclaw"],
   "output_format": "markdown | json"
 }
 ```
@@ -157,6 +172,23 @@ The server tries:
 
 1. `gemini -p "<task>" --output-format json`
 2. Falls back to `gemini -p "<task>"` if JSON output flags are unavailable
+
+### Custom Workers (Antigravity/OpenClaw/Any CLI)
+
+Define command templates in `custom_workers` and call them by worker name. If the command includes `{task}`, councilkit injects the task into that placeholder; otherwise it appends the task as the last argument.
+
+Example:
+
+```json
+{
+  "custom_workers": {
+    "antigravity": {
+      "command": "antigravity run \"{task}\"",
+      "output_format": "auto"
+    }
+  }
+}
+```
 
 ## Security Model
 

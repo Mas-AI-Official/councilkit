@@ -192,3 +192,48 @@ test("codex retries without output schema when the installed CLI lacks the flag"
   assert.equal(runner.calls.length, 2);
   assert.equal(result.results[0]?.attempted_commands?.length, 2);
 });
+
+test("custom workers can be configured and selected", async () => {
+  const cwd = await createFixture({
+    codex_command: "codex",
+    gemini_command: "gemini",
+    default_workers: ["antigravity"],
+    custom_workers: {
+      antigravity: {
+        command: "agx run \"{task}\"",
+        output_format: "json",
+        timeout_ms: 120000
+      }
+    },
+    persistence: {
+      enabled: false,
+      directory: "~/.councilkit/runs"
+    }
+  });
+
+  const runner = new FakeRunner((spec) =>
+    success(
+      spec,
+      JSON.stringify({
+        summary: "Antigravity worker responded.",
+        key_points: ["Custom worker path works"],
+        risks: [],
+        citations_needed: []
+      })
+    )
+  );
+
+  const orchestrator = new CouncilOrchestrator(runner);
+  const result = await orchestrator.run(
+    {
+      task: "Run custom worker",
+      mode: "single",
+      workers: ["antigravity"]
+    },
+    cwd
+  );
+
+  assert.equal(result.results.length, 1);
+  assert.equal(result.results[0]?.worker_name, "antigravity");
+  assert.equal(runner.calls[0]?.executable, "agx");
+});

@@ -14,6 +14,7 @@ const DEFAULT_SETTINGS = {
     codex: {
         use_output_schema: true
     },
+    custom_workers: {},
     persistence: {
         enabled: true,
         directory: "~/.councilkit/runs"

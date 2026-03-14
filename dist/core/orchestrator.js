@@ -5,7 +5,7 @@ import { SpawnCommandRunner } from "./subprocess.js";
 import { loadSettings } from "./config.js";
 import { persistRun } from "./persistence.js";
 import { buildSynthesisInputs, detectDisagreements, recommendNextChecks } from "./synthesis.js";
-import { getWorker, unsupportedWorkerResult } from "../workers/index.js";
+import { resolveWorker, unsupportedWorkerResult } from "../workers/index.js";
 function normalizeWorkers(inputWorkers, fallbackWorkers) {
     const workers = inputWorkers?.filter((worker) => worker.trim().length > 0) ?? fallbackWorkers;
     return workers.length > 0 ? workers : fallbackWorkers;
@@ -37,9 +37,9 @@ export class CouncilOrchestrator {
         const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "councilkit-"));
         try {
             const results = await Promise.all(selectedWorkers.map(async (workerName) => {
-                const worker = getWorker(workerName);
+                const worker = resolveWorker(workerName, settings);
                 if (!worker) {
-                    return unsupportedWorkerResult(workerName);
+                    return unsupportedWorkerResult(workerName, settings);
                 }
                 return worker.run({
                     task: input.task,

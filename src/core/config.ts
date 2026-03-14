@@ -17,6 +17,7 @@ const DEFAULT_SETTINGS: CouncilKitSettings = {
   codex: {
     use_output_schema: true
   },
+  custom_workers: {},
   persistence: {
     enabled: true,
     directory: "~/.councilkit/runs"

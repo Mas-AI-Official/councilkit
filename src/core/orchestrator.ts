@@ -8,7 +8,7 @@ import { loadSettings } from "./config.js";
 import { persistRun } from "./persistence.js";
 import { buildSynthesisInputs, detectDisagreements, recommendNextChecks } from "./synthesis.js";
 import type { CouncilRunInput, CouncilRunOutput } from "../types/council.js";
-import { getWorker, unsupportedWorkerResult } from "../workers/index.js";
+import { resolveWorker, unsupportedWorkerResult } from "../workers/index.js";
 
 function normalizeWorkers(inputWorkers: string[] | undefined, fallbackWorkers: string[]): string[] {
   const workers = inputWorkers?.filter((worker) => worker.trim().length > 0) ?? fallbackWorkers;
@@ -48,9 +48,9 @@ export class CouncilOrchestrator {
     try {
       const results = await Promise.all(
         selectedWorkers.map(async (workerName) => {
-          const worker = getWorker(workerName);
+          const worker = resolveWorker(workerName, settings);
           if (!worker) {
-            return unsupportedWorkerResult(workerName);
+            return unsupportedWorkerResult(workerName, settings);
           }
 
           return worker.run(

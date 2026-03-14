@@ -14,6 +14,18 @@
   "codex": {
     "use_output_schema": true
   },
+  "custom_workers": {
+    "antigravity": {
+      "command": "antigravity run \"{task}\"",
+      "timeout_ms": 300000,
+      "output_format": "auto"
+    },
+    "openclaw": {
+      "command": "openclaw \"{task}\"",
+      "timeout_ms": 300000,
+      "output_format": "auto"
+    }
+  },
   "persistence": {
     "enabled": true,
     "directory": "~/.councilkit/runs"

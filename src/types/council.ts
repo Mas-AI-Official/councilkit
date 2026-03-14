@@ -65,6 +65,14 @@ export interface CouncilKitSettings {
   codex: {
     use_output_schema: boolean;
   };
+  custom_workers?: Record<
+    string,
+    {
+      command: string;
+      timeout_ms?: number;
+      output_format?: "auto" | "json" | "text";
+    }
+  >;
   persistence: {
     enabled: boolean;
     directory: string;
