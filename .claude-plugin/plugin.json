@@ -1,0 +1,5 @@
+{
+  "name": "councilkit",
+  "version": "0.1.0",
+  "description": "Local multi-model council orchestration for Claude Code via a bundled MCP server."
+}

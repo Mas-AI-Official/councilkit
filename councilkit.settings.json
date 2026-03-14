@@ -1,0 +1,21 @@
+{
+  "codex_command": "codex",
+  "gemini_command": "gemini",
+  "local_command": null,
+  "default_workers": [
+    "codex",
+    "gemini"
+  ],
+  "timeouts": {
+    "codex_ms": 300000,
+    "gemini_ms": 300000,
+    "local_ms": 180000
+  },
+  "codex": {
+    "use_output_schema": true
+  },
+  "persistence": {
+    "enabled": true,
+    "directory": "~/.councilkit/runs"
+  }
+}

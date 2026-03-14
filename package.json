@@ -1,0 +1,37 @@
+{
+  "name": "councilkit",
+  "version": "0.1.0",
+  "description": "Claude Code plugin and bundled MCP server for local multi-model CLI orchestration",
+  "type": "module",
+  "main": "dist/server.js",
+  "bin": {
+    "council-hub": "./bin/council-hub.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    ".claude-plugin",
+    ".mcp.json",
+    "skills",
+    "README.md",
+    "LICENSE",
+    "CONTRIBUTING.md",
+    "councilkit.settings.json"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "test": "tsx --test test/**/*.test.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
