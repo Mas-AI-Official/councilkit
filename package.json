@@ -10,6 +10,7 @@
     "claude-code",
     "codex",
     "gemini",
+    "ollama",
     "orchestration",
     "multi-agent",
     "council",
@@ -56,15 +57,19 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "test": "tsx --test test/**/*.test.ts",
+    "setup": "node scripts/setup.mjs",
+    "uninstall": "node scripts/uninstall.mjs",
     "doctor": "node scripts/doctor.mjs",
     "smoke": "node scripts/smoke.mjs",
     "demo:render": "node scripts/render-demo-frames.mjs",
+    "demo:export-png": "node scripts/export-demo-pngs.mjs",
     "launch:check": "npm test && npm run build && npm run smoke"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^25.5.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

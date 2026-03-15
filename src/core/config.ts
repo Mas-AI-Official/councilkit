@@ -1,11 +1,11 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import type { CouncilKitSettings, LoadedSettings } from "../types/council.js";
+import type { CouncilKitSettings, LoadedSettings, WorkerDefinition } from "../types/council.js";
 import { normalizePath } from "./path-utils.js";
 
 const DEFAULT_SETTINGS: CouncilKitSettings = {
-  active_host: "claude_code",
+  active_host: "generic_mcp_host",
   hosts: {
     claude_code: {
       type: "mcp_host",
@@ -21,47 +21,91 @@ const DEFAULT_SETTINGS: CouncilKitSettings = {
       type: "cli_host",
       enabled: true,
       command: "gemini"
+    },
+    generic_mcp_host: {
+      type: "mcp_host",
+      enabled: true
     }
   },
-  worker_registry: {
+  workers: {
     codex: {
       type: "cli",
       enabled: true,
       command: "codex",
-      priority: 10,
-      output_format: "json"
+      role_tags: ["coding", "review", "general"],
+      strengths: ["refactoring", "coding"],
+      privacy_mode: "remote",
+      cost_hint: "subscription",
+      priority: 30
     },
     gemini: {
       type: "cli",
       enabled: true,
       command: "gemini",
-      priority: 20,
-      output_format: "json"
+      role_tags: ["research", "analysis", "general"],
+      strengths: ["research", "analysis"],
+      privacy_mode: "remote",
+      cost_hint: "subscription",
+      priority: 10
     },
     local: {
       type: "cli",
       enabled: false,
-      priority: 90,
-      output_format: "auto"
+      command: "ollama run qwen3:latest \"{task}\"",
+      role_tags: ["local", "general", "analysis", "drafting"],
+      strengths: ["local fallback", "privacy-sensitive local execution"],
+      privacy_mode: "local",
+      cost_hint: "free",
+      priority: 20
+    },
+    ollama: {
+      type: "cli",
+      enabled: false,
+      command: "ollama run qwen3:latest \"{task}\"",
+      role_tags: ["local", "coding", "drafting", "general"],
+      strengths: ["dedicated ollama worker path"],
+      privacy_mode: "local",
+      cost_hint: "free",
+      priority: 40,
+      notes: "Dedicated ollama worker. The local worker is the default compatibility alias."
     }
+  },
+  discovery: {
+    enabled: true,
+    mcp_config_paths: [],
+    auto_register_mcp_workers: true,
+    auto_register_cli_workers: true,
+    require_worker_metadata: true,
+    include: [],
+    exclude: [],
+    disabled_workers: [],
+    mcp_worker_hints: {},
+    cli_candidates: {}
   },
   routing: {
     default_mode: "council",
-    fallback_priority: ["codex", "gemini"],
-    allow_single_worker: true
+    fallback_priority: ["gemini", "local", "codex"],
+    allow_single_worker: true,
+    max_workers_per_task: 3,
+    prefer_local_for_sensitive_tasks: true,
+    prefer_subscription_before_api: true
   },
   codex_command: "codex",
   gemini_command: "gemini",
-  local_command: null,
-  default_workers: ["codex", "gemini"],
+  local_command: "ollama run qwen3:latest",
+  ollama_command: "ollama",
+  ollama_model: "qwen3:latest",
+  default_workers: ["gemini", "local", "codex"],
   timeouts: {
     codex_ms: 300_000,
     gemini_ms: 300_000,
-    local_ms: 180_000
+    local_ms: 180_000,
+    ollama_ms: 180_000
   },
   codex: {
     use_output_schema: true
   },
+  worker_registry: {},
   custom_workers: {},
   persistence: {
     enabled: true,
@@ -99,6 +143,24 @@ function mergeSettings<T>(base: T, override: Partial<T>): T {
   return merged as T;
 }
 
+function arraysEqual(left: string[] | undefined, right: string[] | undefined): boolean {
+  if (!left || !right) {
+    return left === right;
+  }
+
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  for (let index = 0; index < left.length; index += 1) {
+    if (left[index] !== right[index]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 async function readJsonConfig(configPath: string): Promise<Partial<CouncilKitSettings>> {
   const raw = await fs.readFile(configPath, "utf8");
   const parsed = JSON.parse(raw) as unknown;
@@ -110,69 +172,130 @@ async function readJsonConfig(configPath: string): Promise<Partial<CouncilKitSet
   return parsed as Partial<CouncilKitSettings>;
 }
 
-function normalizeRuntimeSettings(settings: CouncilKitSettings): CouncilKitSettings {
-  const normalized: CouncilKitSettings = {
-    ...settings,
-    custom_workers: { ...(settings.custom_workers ?? {}) }
-  };
+function mapLegacyFieldsToWorkers(settings: CouncilKitSettings): void {
+  const workers: Record<string, WorkerDefinition> = { ...(settings.workers ?? {}) };
+  const configuredDefaultWorkers = [...(settings.default_workers ?? [])];
 
-  const registry = settings.worker_registry ?? {};
-  const priorityPairs: Array<{ name: string; priority: number }> = [];
-
-  for (const [name, worker] of Object.entries(registry)) {
-    if (!worker || worker.enabled === false) {
-      continue;
-    }
-
-    priorityPairs.push({
-      name,
-      priority: worker.priority ?? 100
-    });
-
-    if (worker.type !== "cli") {
-      continue;
-    }
-
-    const cliCommand = worker.command?.trim();
-    if (!cliCommand) {
-      continue;
-    }
-
-    if (name === "codex") {
-      normalized.codex_command = cliCommand;
-      continue;
-    }
-
-    if (name === "gemini") {
-      normalized.gemini_command = cliCommand;
-      continue;
-    }
-
-    if (name === "local") {
-      normalized.local_command = cliCommand;
-      continue;
-    }
-
-    normalized.custom_workers ??= {};
-    normalized.custom_workers[name] = {
-      command: cliCommand,
-      timeout_ms: worker.timeout_ms,
-      output_format: worker.output_format ?? "auto"
+  if (settings.codex_command && !workers.codex?.command) {
+    workers.codex = {
+      ...(workers.codex ?? { type: "cli" }),
+      type: "cli",
+      command: settings.codex_command,
+      enabled: workers.codex?.enabled ?? true
     };
   }
 
-  const fallbackPriority = normalized.routing?.fallback_priority ?? [];
-  if (fallbackPriority.length > 0) {
-    normalized.default_workers = [...new Set(fallbackPriority)];
-    return normalized;
+  if (settings.gemini_command && !workers.gemini?.command) {
+    workers.gemini = {
+      ...(workers.gemini ?? { type: "cli" }),
+      type: "cli",
+      command: settings.gemini_command,
+      enabled: workers.gemini?.enabled ?? true
+    };
   }
 
-  if (priorityPairs.length > 0) {
-    normalized.default_workers = priorityPairs
-      .sort((left, right) => left.priority - right.priority)
-      .map((entry) => entry.name);
+  if (settings.local_command && !workers.local?.command) {
+    workers.local = {
+      ...(workers.local ?? { type: "cli" }),
+      type: "cli",
+      command: settings.local_command,
+      enabled: workers.local?.enabled ?? true
+    };
   }
 
+  if (settings.ollama_command && !workers.ollama?.command) {
+    const model = settings.ollama_model ?? "llama3.1";
+    workers.ollama = {
+      ...(workers.ollama ?? { type: "cli" }),
+      type: "cli",
+      command: `${settings.ollama_command} run ${model} "{task}"`,
+      enabled: workers.ollama?.enabled ?? false
+    };
+  }
+
+  for (const [workerId, worker] of Object.entries(settings.worker_registry ?? {})) {
+    workers[workerId] = {
+      ...(workers[workerId] ?? {}),
+      ...worker,
+      type: worker.type
+    };
+  }
+
+  for (const [workerId, legacyWorker] of Object.entries(settings.custom_workers ?? {})) {
+    if (workers[workerId]) {
+      continue;
+    }
+
+    workers[workerId] = {
+      type: "cli",
+      command: legacyWorker.command,
+      enabled: true,
+      timeout_ms: legacyWorker.timeout_ms,
+      output_format: legacyWorker.output_format,
+      role_tags: ["general"],
+      source: "manual",
+      cost_hint: "unknown",
+      privacy_mode: "remote"
+    };
+  }
+
+  const fallbackPriority = settings.routing?.fallback_priority;
+  const fallbackLooksDefault = arraysEqual(
+    fallbackPriority,
+    DEFAULT_SETTINGS.routing?.fallback_priority
+  );
+
+  if (
+    configuredDefaultWorkers.length > 0 &&
+    (!fallbackPriority?.length || fallbackLooksDefault)
+  ) {
+    settings.routing = {
+      ...(settings.routing ?? {}),
+      fallback_priority: [...configuredDefaultWorkers]
+    };
+    settings.default_workers = [...configuredDefaultWorkers];
+  } else if (fallbackPriority?.length) {
+    settings.default_workers = [...fallbackPriority];
+  }
+
+  const codexWorker = workers.codex;
+  if (codexWorker?.command) {
+    settings.codex_command = codexWorker.command;
+  }
+  if (typeof codexWorker?.timeout_ms === "number" && codexWorker.timeout_ms > 0) {
+    settings.timeouts.codex_ms = codexWorker.timeout_ms;
+  }
+
+  const geminiWorker = workers.gemini;
+  if (geminiWorker?.command) {
+    settings.gemini_command = geminiWorker.command;
+  }
+  if (typeof geminiWorker?.timeout_ms === "number" && geminiWorker.timeout_ms > 0) {
+    settings.timeouts.gemini_ms = geminiWorker.timeout_ms;
+  }
+
+  const localWorker = workers.local;
+  if (localWorker?.command) {
+    settings.local_command = localWorker.command;
+  }
+  if (typeof localWorker?.timeout_ms === "number" && localWorker.timeout_ms > 0) {
+    settings.timeouts.local_ms = localWorker.timeout_ms;
+  }
+
+  const ollamaWorker = workers.ollama;
+  if (ollamaWorker?.command) {
+    settings.ollama_command = ollamaWorker.command;
+  }
+  if (typeof ollamaWorker?.timeout_ms === "number" && ollamaWorker.timeout_ms > 0) {
+    settings.timeouts.ollama_ms = ollamaWorker.timeout_ms;
+  }
+
+  settings.workers = workers;
+}
+
+function normalizeRuntimeSettings(settings: CouncilKitSettings): CouncilKitSettings {
+  const normalized = mergeSettings(DEFAULT_SETTINGS, settings);
+  mapLegacyFieldsToWorkers(normalized);
   return normalized;
 }
 

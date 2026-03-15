@@ -1,0 +1,18 @@
+{
+  "workers": {
+    "r1_worker": {
+      "type": "cli",
+      "enabled": false,
+      "command": "r1 \"{task}\"",
+      "role_tags": ["analysis", "reasoning", "general"],
+      "strengths": ["chain-of-thought style reasoning"],
+      "privacy_mode": "remote",
+      "cost_hint": "unknown",
+      "priority": 70,
+      "notes": "Template only. Enable after validating command availability and output format."
+    }
+  },
+  "routing": {
+    "fallback_priority": ["codex", "gemini", "r1_worker"]
+  }
+}

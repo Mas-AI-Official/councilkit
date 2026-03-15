@@ -6,13 +6,19 @@
       "enabled": true
     }
   },
-  "worker_registry": {
+  "workers": {
     "codex": {
       "type": "cli",
       "enabled": true,
       "command": "codex",
+      "role_tags": ["coding", "review", "general"],
+      "cost_hint": "subscription",
+      "privacy_mode": "remote",
       "priority": 10
     }
+  },
+  "discovery": {
+    "enabled": false
   },
   "routing": {
     "default_mode": "single",

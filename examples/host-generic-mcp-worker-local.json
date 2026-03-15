@@ -6,14 +6,26 @@
       "enabled": true
     }
   },
-  "worker_registry": {
+  "workers": {
     "local": {
       "type": "cli",
       "enabled": true,
       "command": "ollama run llama3 \"{task}\"",
+      "role_tags": ["local", "coding", "general"],
+      "cost_hint": "free",
+      "privacy_mode": "local",
       "priority": 10,
       "output_format": "auto"
     }
+  },
+  "discovery": {
+    "enabled": true,
+    "mcp_config_paths": [
+      ".mcp.json"
+    ],
+    "auto_register_mcp_workers": true,
+    "require_worker_metadata": true,
+    "mcp_worker_hints": {}
   },
   "routing": {
     "default_mode": "single",

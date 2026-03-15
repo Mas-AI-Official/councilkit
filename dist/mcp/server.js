@@ -48,7 +48,7 @@ export async function startServer() {
                             items: {
                                 type: "string"
                             },
-                            description: "Optional worker order. Built-ins: codex, gemini, local. You can also use configured custom_workers names."
+                            description: "Optional worker order. Built-ins include codex, gemini, local, ollama. You can also use discovered/manual workers from configuration."
                         },
                         output_format: {
                             type: "string",

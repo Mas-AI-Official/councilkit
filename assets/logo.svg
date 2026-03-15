@@ -1,33 +1,19 @@
-<svg width="1280" height="320" viewBox="0 0 1280 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="1200" height="320" viewBox="0 0 1200 320" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1280" y2="320" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0B1220"/>
-      <stop offset="1" stop-color="#111827"/>
-    </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="220" y2="220" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#22D3EE"/>
-      <stop offset="1" stop-color="#60A5FA"/>
-    </linearGradient>
-    <linearGradient id="accent2" x1="48" y1="24" x2="196" y2="196" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#34D399"/>
-      <stop offset="1" stop-color="#14B8A6"/>
+    <linearGradient id="subGrad" x1="320" y1="210" x2="820" y2="250" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#93C5FD"/>
+      <stop offset="1" stop-color="#A7F3D0"/>
     </linearGradient>
   </defs>
 
-  <rect width="1280" height="320" rx="28" fill="url(#bg)"/>
-  <rect x="30" y="30" width="220" height="220" rx="30" fill="#0F172A"/>
+  <rect width="1200" height="320" rx="24" fill="#0B1220"/>
+  <rect x="30" y="40" width="240" height="240" rx="26" fill="#111827"/>
+  <circle cx="150" cy="160" r="78" fill="#1E293B" stroke="#334155" stroke-width="2"/>
+  <path d="M150 90L210 126V194L150 230L90 194V126L150 90Z" fill="#2563EB"/>
+  <path d="M150 120L186 142V178L150 200L114 178V142L150 120Z" fill="#10B981"/>
 
-  <path d="M76 72L140 44L204 72V138C204 174 177 205 140 212C103 205 76 174 76 138V72Z" fill="url(#accent)"/>
-  <path d="M108 106L140 92L172 106V138C172 157 158 173 140 177C122 173 108 157 108 138V106Z" fill="#0F172A"/>
-  <path d="M52 190C82 165 115 152 140 152C165 152 198 165 228 190" stroke="url(#accent2)" stroke-width="14" stroke-linecap="round"/>
-
-  <text x="290" y="132" fill="#F8FAFC" font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="700" letter-spacing="2">
-    COUNCILKIT
+  <text x="320" y="180" font-family="Segoe UI, Arial, sans-serif" font-size="98" font-weight="800">
+    <tspan fill="#2563EB">Council</tspan><tspan fill="#10B981">Kit</tspan>
   </text>
-  <text x="292" y="188" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="600" letter-spacing="4">
-    SUBSCRIPTION-FIRST MODEL ORCHESTRATION
-  </text>
-  <text x="292" y="236" fill="#34D399" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="5">
-    GSD MODE
-  </text>
+  <text x="324" y="232" fill="url(#subGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="600">One prompt. Many models. One answer.</text>
 </svg>

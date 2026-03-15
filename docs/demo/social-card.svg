@@ -1,17 +1,23 @@
 <svg width="1600" height="840" viewBox="0 0 1600 840" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="840" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0B1220"/>
-      <stop offset="1" stop-color="#111827"/>
+    <linearGradient id="titleGrad" x1="140" y1="240" x2="980" y2="390" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E2E8F0"/>
+      <stop offset="0.5" stop-color="#93C5FD"/>
+      <stop offset="1" stop-color="#A7F3D0"/>
     </linearGradient>
   </defs>
-  <rect width="1600" height="840" fill="url(#bg)"/>
-  <rect x="72" y="72" width="1456" height="696" rx="28" fill="#0F172A" stroke="#334155"/>
-  <text x="140" y="240" fill="#2563EB" font-family="Segoe UI, Arial, sans-serif" font-size="88" font-weight="800">Council</text>
-  <text x="503" y="240" fill="#10B981" font-family="Segoe UI, Arial, sans-serif" font-size="88" font-weight="800">Kit</text>
-  <text x="140" y="320" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="48" font-weight="600">One prompt. Many models. One answer.</text>
-  <text x="140" y="395" fill="#34D399" font-family="Segoe UI, Arial, sans-serif" font-size="40" font-weight="700">Use your subscriptions first. API optional.</text>
-  <rect x="140" y="465" width="1320" height="210" rx="18" fill="#111827" stroke="#1F2937"/>
-  <text x="188" y="542" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="34">Any Host  ->  CouncilKit Core  ->  MCP / CLI / API workers</text>
-  <text x="188" y="600" fill="#A7F3D0" font-family="Consolas, Menlo, monospace" font-size="34">one merged answer: agreements + disagreements + next checks</text>
+
+  <rect width="1600" height="840" fill="#0B1220"/>
+  <rect x="72" y="72" width="1456" height="696" rx="28" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+
+  <text x="140" y="238" font-family="Segoe UI, Arial, sans-serif" font-size="104" font-weight="800">
+    <tspan fill="#2563EB">Council</tspan><tspan fill="#10B981">Kit</tspan>
+  </text>
+  <text x="140" y="322" fill="url(#titleGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="700">One prompt. Many models. One answer.</text>
+  <text x="140" y="392" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="42">Bring your own host. Bring your own workers.</text>
+  <text x="140" y="452" fill="#34D399" font-family="Segoe UI, Arial, sans-serif" font-size="40">Use your subscriptions first. API optional.</text>
+
+  <rect x="140" y="500" width="1320" height="200" rx="18" fill="#111827" stroke="#1F2937"/>
+  <text x="188" y="574" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="34">Host -> CouncilKit Core -> Discovery + Routing -> Workers</text>
+  <text x="188" y="634" fill="#A7F3D0" font-family="Consolas, Menlo, monospace" font-size="34">Unified Answer: Synthesis + Disagreements + Next Checks</text>
 </svg>

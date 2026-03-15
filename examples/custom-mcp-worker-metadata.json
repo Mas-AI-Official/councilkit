@@ -1,0 +1,22 @@
+{
+  "discovery": {
+    "enabled": true,
+    "mcp_config_paths": [".mcp.json"],
+    "auto_register_mcp_workers": true,
+    "require_worker_metadata": true,
+    "mcp_worker_hints": {
+      "custom_planning_server": {
+        "id": "planning_mcp_worker",
+        "display_name": "Planning MCP Worker",
+        "adapter_type": "mcp",
+        "transport": "stdio",
+        "role_tags": ["planning", "analysis", "general"],
+        "strengths": ["milestone planning", "rollout strategy"],
+        "privacy_mode": "mixed",
+        "cost_hint": "unknown",
+        "enabled": false,
+        "notes": "Template only: enable after validating this worker in your environment."
+      }
+    }
+  }
+}

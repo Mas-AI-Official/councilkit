@@ -1,0 +1,10 @@
+{
+  "codex_command": "codex",
+  "gemini_command": "gemini",
+  "local_command": "ollama run qwen3:latest",
+  "default_workers": ["gemini", "local", "codex"],
+  "routing": {
+    "fallback_priority": ["gemini", "local", "codex"],
+    "prefer_local_for_sensitive_tasks": true
+  }
+}

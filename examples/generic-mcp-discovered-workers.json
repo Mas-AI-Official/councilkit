@@ -1,0 +1,42 @@
+{
+  "active_host": "generic_mcp_host",
+  "hosts": {
+    "generic_mcp_host": {
+      "type": "mcp_host",
+      "enabled": true
+    }
+  },
+  "workers": {
+    "codex": {
+      "type": "cli",
+      "enabled": true,
+      "command": "codex",
+      "role_tags": ["coding", "general"],
+      "cost_hint": "subscription",
+      "privacy_mode": "remote",
+      "priority": 10
+    }
+  },
+  "discovery": {
+    "enabled": true,
+    "mcp_config_paths": [".mcp.json"],
+    "auto_register_mcp_workers": true,
+    "require_worker_metadata": true,
+    "mcp_worker_hints": {
+      "research_server": {
+        "id": "research_worker",
+        "adapter_type": "cli",
+        "command": "gemini -p \"{task}\" --output-format json",
+        "role_tags": ["research", "analysis", "general"],
+        "cost_hint": "subscription",
+        "privacy_mode": "remote",
+        "enabled": true
+      }
+    }
+  },
+  "routing": {
+    "default_mode": "council",
+    "fallback_priority": ["codex", "research_worker"],
+    "max_workers_per_task": 2
+  }
+}

@@ -14,11 +14,7 @@ function buildArgs(command, task) {
         args: [...parsed.args, task]
     };
 }
-export function getCustomWorker(name, settings) {
-    const config = settings.custom_workers?.[name];
-    if (!config) {
-        return undefined;
-    }
+export function createCliWorkerAdapter(name, config) {
     return {
         name,
         async run(context, runner) {
@@ -44,5 +40,12 @@ export function getCustomWorker(name, settings) {
             };
         }
     };
+}
+export function getCustomWorker(name, settings) {
+    const config = settings.custom_workers?.[name];
+    if (!config) {
+        return undefined;
+    }
+    return createCliWorkerAdapter(name, config);
 }
 //# sourceMappingURL=custom.js.map

@@ -1,40 +1,44 @@
 # Release Checklist
 
-## Preflight
+## 1) Build + Validation
 
-- [ ] Clean clone in a new directory
+- [ ] Clean clone
 - [ ] `npm ci`
 - [ ] `npm test`
 - [ ] `npm run build`
-- [ ] `npm run doctor` (understand expected missing CLI warnings if applicable)
 - [ ] `npm run smoke`
+- [ ] `npm run doctor` (missing external CLIs is acceptable if documented)
 - [ ] `npm pack --dry-run`
+- [ ] `npm run setup -- --dry-run`
+- [ ] `npm run uninstall -- --host=generic --dry-run`
 
-## Integration Checks
+## 2) README + Visual QA
 
-- [ ] first-class paths verified
-- [ ] documented/manual templates link-check
-- [ ] experimental paths labeled clearly
-- [ ] planned paths not overclaimed
+- [ ] README hero renders cleanly in GitHub preview
+- [ ] Top section is scannable in under 30 seconds
+- [ ] `docs/demo/workflow.svg` text fits and connectors align
+- [ ] `docs/demo/discovery-routing.svg` text fits and connectors align
+- [ ] `docs/demo/support-matrix.svg` rows are readable
+- [ ] `docs/demo/output-example.svg` sections are readable
+- [ ] `docs/demo/storyboard/index.html` loads and cycles frames
+- [ ] `assets/social-preview.png` looks clean at social crop sizes
 
-## Demo And Docs
+## 3) Messaging + Claims
 
-- [ ] README links valid
-- [ ] Demo images render on GitHub
-- [ ] Storyboard HTML opens locally
-- [ ] FAQ/security/quickstart docs aligned with current behavior
-- [ ] Launch copy in `docs/launch/` reviewed
+- [ ] About line is accurate (no overclaiming)
+- [ ] Tagline is set
+- [ ] Support levels remain explicit (first-class/documented/manual/experimental/planned)
+- [ ] No claim of universal IDE/agent support
+- [ ] No claim of unsupported providers as implemented
 
-## Package And Trust
+## 4) Release Metadata
 
-- [ ] `package.json` metadata complete
-- [ ] `LICENSE` present (Apache-2.0)
-- [ ] `CONTRIBUTING.md` present
-- [ ] `SECURITY.md` present
-- [ ] No accidental large artifacts committed
+- [ ] Suggested release title chosen
+- [ ] Release notes draft reviewed
+- [ ] Changelog entry prepared
+- [ ] License/security/contributing links valid
 
-## GitHub Launch Metadata
+## 5) Release Type Decision
 
-- [ ] Repo description set
-- [ ] Repo tagline set
-- [ ] Social preview image set (`docs/demo/social-card.svg`, convert to PNG if needed)
+- Pre-release (`v0.1.0-beta.1`) if any major visual/demo rough edges remain.
+- Stable (`v0.1.0`) if README, visuals, smoke checks, and packaging are all clean.

@@ -1,37 +1,50 @@
 # Architecture
 
-CouncilKit uses a middle-layer model:
+CouncilKit architecture separates hosts and workers:
 
-- Host -> CouncilKit Core -> Workers -> Unified answer
+Host -> CouncilKit Core -> Worker Registry + Routing -> Selected Workers -> Unified Answer
 
 ## Core Components
 
 - `CouncilKit Core`: orchestration engine + synthesis + persistence.
-- `MCP server`: `council-hub` (`src/mcp/server.ts`).
-- `Worker adapters`: runtime workers called by orchestrator.
+- `council-hub`: MCP stdio server (`src/mcp/server.ts`).
+- Worker adapters:
+  - CLI worker adapter (active today)
+  - MCP worker adapter pattern (discovery/config path)
+  - optional API worker adapter pattern
 
-## Adapter Concepts
+## Host vs Worker Separation
 
-The repo documents and partially codifies these adapter concepts:
+- Host: entrypoint that invokes `council_run`.
+- Worker: model/tool executor chosen by registry + router.
+- CouncilKit: middle layer coordinating fan-out and merge.
 
-- `MCPHostAdapter` pattern (host invokes `council_run` over MCP)
-- `CLIHostAdapter` pattern (host wrapper launches CouncilKit runtime)
-- `CLIWorkerAdapter` (active today)
-- `MCPWorkerAdapter` (documented pattern)
-- `APIWorkerAdapter` (optional/future path)
+This allows one runtime to support multiple host paths without hard-coding one editor or one vendor.
 
-Interface reference:
+## Registry and Discovery
+
+Registry is built from:
+
+1. built-in workers (`codex`, `gemini`, `local`, `ollama`)
+2. discovered MCP server candidates (metadata-gated)
+3. discovered CLI candidates from config
+4. manual worker entries
+
+Discovery is controlled by include/exclude lists and optional metadata hints.
+
+## Routing
+
+Routing is heuristic-based:
+
+- classify task (`coding`, `research`, `planning`, `sensitive`)
+- score workers by tags, privacy mode, cost hint, priority, health
+- select workers for `single` or `council` mode
+
+Routing metadata is returned in `metadata.task_profile` and `metadata.routing_scores`.
+
+## Interfaces
+
+Adapter pattern references:
+
 - [`src/adapters/types.ts`](../src/adapters/types.ts)
-
-## Separation Of Concerns
-
-- Hosts are entrypoints.
-- Workers are execution targets.
-- CouncilKit is the orchestration middle layer.
-
-This separation is intentional and reflected in config:
-
-- `active_host`
-- `hosts`
-- `worker_registry`
-- `routing`
+- [`src/types/council.ts`](../src/types/council.ts)

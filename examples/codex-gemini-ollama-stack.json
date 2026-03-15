@@ -1,0 +1,37 @@
+{
+  "workers": {
+    "codex": {
+      "type": "cli",
+      "enabled": true,
+      "command": "codex",
+      "role_tags": ["coding", "review", "general"],
+      "cost_hint": "subscription",
+      "privacy_mode": "remote",
+      "priority": 30
+    },
+    "gemini": {
+      "type": "cli",
+      "enabled": true,
+      "command": "gemini",
+      "role_tags": ["research", "analysis", "general"],
+      "cost_hint": "subscription",
+      "privacy_mode": "remote",
+      "priority": 10
+    },
+    "ollama": {
+      "type": "cli",
+      "enabled": true,
+      "command": "ollama run qwen3:latest \"{task}\"",
+      "role_tags": ["local", "analysis", "general"],
+      "cost_hint": "free",
+      "privacy_mode": "local",
+      "priority": 20
+    }
+  },
+  "routing": {
+    "default_mode": "council",
+    "fallback_priority": ["gemini", "ollama", "codex"],
+    "max_workers_per_task": 3,
+    "prefer_local_for_sensitive_tasks": true
+  }
+}

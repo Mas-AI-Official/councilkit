@@ -1,11 +1,11 @@
 {
   "active_host": "generic_mcp_host",
   "hosts": {
-    "generic_mcp_host": {
+    "claude_code": {
       "type": "mcp_host",
       "enabled": true
     },
-    "claude_code": {
+    "generic_mcp_host": {
       "type": "mcp_host",
       "enabled": true
     },
@@ -20,67 +20,111 @@
       "command": "gemini"
     }
   },
-  "worker_registry": {
+  "workers": {
     "codex": {
       "type": "cli",
       "enabled": true,
       "command": "codex",
-      "priority": 10
+      "role_tags": ["coding", "review", "general"],
+      "cost_hint": "subscription",
+      "privacy_mode": "remote",
+      "priority": 30
     },
     "gemini": {
       "type": "cli",
       "enabled": true,
       "command": "gemini",
-      "priority": 20
+      "role_tags": ["research", "analysis", "general"],
+      "cost_hint": "subscription",
+      "privacy_mode": "remote",
+      "priority": 10
     },
-    "openclaw": {
+    "local": {
       "type": "cli",
       "enabled": true,
-      "command": "openclaw \"{task}\"",
-      "priority": 30,
-      "output_format": "auto"
+      "command": "ollama run qwen3:latest \"{task}\"",
+      "role_tags": ["local", "analysis", "general"],
+      "cost_hint": "free",
+      "privacy_mode": "local",
+      "priority": 20
     },
-    "future_api_worker": {
-      "type": "api",
+    "ollama": {
+      "type": "cli",
+      "enabled": true,
+      "command": "ollama run qwen3:latest \"{task}\"",
+      "role_tags": ["local", "coding", "drafting", "general"],
+      "cost_hint": "free",
+      "privacy_mode": "local",
+      "priority": 40
+    },
+    "openclaw_custom": {
+      "type": "cli",
       "enabled": false,
-      "endpoint": "https://example.invalid/api",
-      "model": "example-model"
+      "command": "openclaw \"{task}\"",
+      "role_tags": ["general"],
+      "cost_hint": "unknown",
+      "privacy_mode": "remote",
+      "priority": 60
+    }
+  },
+  "discovery": {
+    "enabled": true,
+    "mcp_config_paths": [".mcp.json"],
+    "auto_register_mcp_workers": true,
+    "auto_register_cli_workers": true,
+    "require_worker_metadata": true,
+    "include": [],
+    "exclude": [],
+    "disabled_workers": [],
+    "mcp_worker_hints": {
+      "grok_bridge": {
+        "id": "grok_mcp",
+        "adapter_type": "mcp",
+        "role_tags": ["research", "analysis", "general"],
+        "cost_hint": "subscription",
+        "privacy_mode": "remote",
+        "enabled": false
+      }
+    },
+    "cli_candidates": {
+      "r1_cli": {
+        "type": "cli",
+        "enabled": false,
+        "command": "r1 \"{task}\"",
+        "role_tags": ["analysis", "general"],
+        "cost_hint": "unknown",
+        "privacy_mode": "remote",
+        "priority": 70
+      }
     }
   },
   "routing": {
     "default_mode": "council",
-    "fallback_priority": [
-      "codex",
-      "gemini",
-      "openclaw"
-    ],
-    "allow_single_worker": true
+    "fallback_priority": ["gemini", "local", "codex", "ollama"],
+    "allow_single_worker": true,
+    "max_workers_per_task": 3,
+    "prefer_local_for_sensitive_tasks": true,
+    "prefer_subscription_before_api": true
   },
   "codex_command": "codex",
   "gemini_command": "gemini",
-  "local_command": null,
-  "default_workers": [
-    "codex",
-    "gemini",
-    "antigravity",
-    "openclaw"
-  ],
+  "local_command": "ollama run qwen3:latest",
+  "ollama_command": "ollama",
+  "ollama_model": "qwen3:latest",
+  "default_workers": ["gemini", "local", "codex"],
   "timeouts": {
     "codex_ms": 300000,
     "gemini_ms": 300000,
-    "local_ms": 180000
+    "local_ms": 180000,
+    "ollama_ms": 180000
   },
   "codex": {
     "use_output_schema": true
   },
+  "worker_registry": {},
   "custom_workers": {
-    "antigravity": {
-      "command": "antigravity run \"{task}\"",
-      "timeout_ms": 300000,
-      "output_format": "auto"
-    },
-    "openclaw": {
-      "command": "openclaw \"{task}\"",
+    "minimax_custom": {
+      "command": "minimax-cli \"{task}\"",
       "timeout_ms": 300000,
       "output_format": "auto"
     }

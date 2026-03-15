@@ -1,21 +1,31 @@
-<svg width="1400" height="860" viewBox="0 0 1400 860" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1400" height="860" fill="#0B1220"/>
-  <rect x="50" y="50" width="1300" height="760" rx="18" fill="#0F172A" stroke="#334155"/>
-  <text x="90" y="118" fill="#E2E8F0" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700">Merged Output Example</text>
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="titleGrad" x1="90" y1="40" x2="760" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E2E8F0"/>
+      <stop offset="0.5" stop-color="#93C5FD"/>
+      <stop offset="1" stop-color="#A7F3D0"/>
+    </linearGradient>
+  </defs>
 
-  <rect x="90" y="160" width="1220" height="170" rx="14" fill="#111827" stroke="#1F2937"/>
-  <text x="120" y="206" fill="#A7F3D0" font-family="Consolas, Menlo, monospace" font-size="26">Agreement</text>
-  <text x="120" y="246" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="23">- codex and gemini both recommend phased rollout</text>
-  <text x="120" y="282" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="23">- both require integration tests before deploy</text>
+  <rect width="1400" height="900" fill="#0B1220"/>
+  <rect x="50" y="50" width="1300" height="800" rx="20" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+  <text x="90" y="118" fill="url(#titleGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="44" font-weight="700">Unified Answer Output</text>
 
-  <rect x="90" y="360" width="1220" height="170" rx="14" fill="#111827" stroke="#1F2937"/>
-  <text x="120" y="406" fill="#FCA5A5" font-family="Consolas, Menlo, monospace" font-size="26">Disagreements</text>
-  <text x="120" y="446" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="23">- gemini flags rollback risk not covered by codex</text>
-  <text x="120" y="482" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="23">- local worker suggests smaller migration batch size</text>
+  <rect x="90" y="164" width="1220" height="180" rx="14" fill="#111827" stroke="#1F2937"/>
+  <text x="122" y="214" fill="#A7F3D0" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Synthesis</text>
+  <text x="122" y="254" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="22">Research Worker: phased rollout + rollback checkpoint before each stage.</text>
+  <text x="122" y="288" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="22">Coding Worker: add migration idempotency checks and schema validation tests.</text>
+  <text x="122" y="322" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="22">Local Worker: dry-run migration locally with production-like fixture data.</text>
 
-  <rect x="90" y="560" width="1220" height="200" rx="14" fill="#111827" stroke="#1F2937"/>
-  <text x="120" y="606" fill="#93C5FD" font-family="Consolas, Menlo, monospace" font-size="26">Recommended Next Checks</text>
-  <text x="120" y="646" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="23">1. stage rollback drill</text>
-  <text x="120" y="682" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="23">2. compare migration timings on production-like data</text>
-  <text x="120" y="718" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="23">3. re-run council after test evidence is available</text>
+  <rect x="90" y="374" width="1220" height="170" rx="14" fill="#111827" stroke="#1F2937"/>
+  <text x="122" y="424" fill="#FCA5A5" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Disagreements</text>
+  <text x="122" y="464" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="22">- Research Worker requests slower canary ramp than Coding Worker.</text>
+  <text x="122" y="498" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="22">- Local Worker suggests stricter rollback trigger threshold.</text>
+
+  <rect x="90" y="574" width="1220" height="220" rx="14" fill="#111827" stroke="#1F2937"/>
+  <text x="122" y="624" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Next Checks</text>
+  <text x="122" y="664" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="22">1. Run staging rollback drill with synthetic failure injection.</text>
+  <text x="122" y="698" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="22">2. Compare migration runtime on production-like snapshots.</text>
+  <text x="122" y="732" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="22">3. Re-run council after evidence is collected and update recommendation confidence.</text>
+  <text x="122" y="766" fill="#34D399" font-family="Consolas, Menlo, monospace" font-size="22">Result: one final recommendation with transparent rationale.</text>
 </svg>

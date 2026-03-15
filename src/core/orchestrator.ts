@@ -7,13 +7,15 @@ import { SpawnCommandRunner } from "./subprocess.js";
 import { loadSettings } from "./config.js";
 import { persistRun } from "./persistence.js";
 import { buildSynthesisInputs, detectDisagreements, recommendNextChecks } from "./synthesis.js";
-import type { CouncilRunInput, CouncilRunOutput } from "../types/council.js";
-import { resolveWorker, unsupportedWorkerResult } from "../workers/index.js";
-
-function normalizeWorkers(inputWorkers: string[] | undefined, fallbackWorkers: string[]): string[] {
-  const workers = inputWorkers?.filter((worker) => worker.trim().length > 0) ?? fallbackWorkers;
-  return workers.length > 0 ? workers : fallbackWorkers;
-}
+import { buildWorkerRegistry } from "./worker-registry.js";
+import { selectWorkersForTask } from "./routing.js";
+import type { CouncilRunInput, CouncilRunOutput, WorkerRegistryEntry } from "../types/council.js";
+import {
+  disabledWorkerResult,
+  resolveWorkerAdapter,
+  unavailableAdapterResult,
+  unsupportedWorkerResult
+} from "../workers/index.js";
 
 function validateInput(input: CouncilRunInput): void {
   if (typeof input.task !== "string" || input.task.trim().length === 0) {
@@ -33,6 +35,10 @@ function validateInput(input: CouncilRunInput): void {
   }
 }
 
+function indexById(entries: WorkerRegistryEntry[]): Map<string, WorkerRegistryEntry> {
+  return new Map(entries.map((entry) => [entry.id, entry]));
+}
+
 export class CouncilOrchestrator {
   constructor(private readonly runner: CommandRunner = new SpawnCommandRunner()) {}
 
@@ -41,19 +47,31 @@ export class CouncilOrchestrator {
 
     const startedAt = new Date();
     const { settings, configPath } = await loadSettings(cwd);
-    const requestedWorkers = normalizeWorkers(input.workers, settings.default_workers);
-    const selectedWorkers = input.mode === "single" ? requestedWorkers.slice(0, 1) : requestedWorkers;
+    const { entries } = await buildWorkerRegistry(settings, cwd);
+    const workerById = indexById(entries);
+
+    const selection = selectWorkersForTask(input, entries, settings);
+    const selectedWorkers = selection.selected_worker_ids;
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "councilkit-"));
 
     try {
       const results = await Promise.all(
-        selectedWorkers.map(async (workerName) => {
-          const worker = resolveWorker(workerName, settings);
-          if (!worker) {
-            return unsupportedWorkerResult(workerName, settings);
+        selectedWorkers.map(async (workerId) => {
+          const entry = workerById.get(workerId);
+          if (!entry) {
+            return unsupportedWorkerResult(workerId, entries.map((item) => item.id));
           }
 
-          return worker.run(
+          if (!entry.enabled) {
+            return disabledWorkerResult(entry);
+          }
+
+          const adapter = resolveWorkerAdapter(entry, settings);
+          if (!adapter) {
+            return unavailableAdapterResult(entry);
+          }
+
+          return adapter.run(
             {
               task: input.task,
               settings,
@@ -84,7 +102,9 @@ export class CouncilOrchestrator {
           duration_ms: finishedAt.getTime() - startedAt.getTime(),
           config_path: configPath,
           selected_workers: selectedWorkers,
-          requested_mode: input.mode
+          requested_mode: input.mode,
+          task_profile: selection.task_profile,
+          routing_scores: selection.routing_scores
         }
       };
 

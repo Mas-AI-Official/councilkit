@@ -1,0 +1,21 @@
+{
+  "workers": {
+    "minimax_worker": {
+      "type": "cli",
+      "enabled": false,
+      "command": "minimax-cli \"{task}\"",
+      "role_tags": ["general", "drafting"],
+      "privacy_mode": "remote",
+      "cost_hint": "unknown",
+      "priority": 75,
+      "notes": "Template only. Not a verified first-class adapter in this repository."
+    }
+  },
+  "custom_workers": {
+    "minimax_worker": {
+      "command": "minimax-cli \"{task}\"",
+      "output_format": "auto",
+      "timeout_ms": 300000
+    }
+  }
+}

@@ -6,19 +6,35 @@
     <title>CouncilKit Demo Storyboard</title>
     <style>
       body { margin: 0; background: #020617; color: #e2e8f0; font-family: Segoe UI, Arial, sans-serif; }
-      main { max-width: 1280px; margin: 24px auto; padding: 0 16px; }
-      h1 { font-size: 30px; margin-bottom: 14px; }
-      p { color: #93c5fd; margin-bottom: 20px; }
-      img { width: 100%; border-radius: 14px; border: 1px solid #334155; margin-bottom: 18px; }
+      main { max-width: 1366px; margin: 24px auto; padding: 0 16px 32px; }
+      h1 { font-size: 30px; margin-bottom: 12px; }
+      p { color: #93c5fd; margin-bottom: 20px; line-height: 1.5; }
+      .player { border: 1px solid #334155; border-radius: 14px; overflow: hidden; margin-bottom: 22px; }
+      .player img { width: 100%; display: block; }
+      .frames img { width: 100%; border-radius: 12px; border: 1px solid #334155; margin-bottom: 16px; }
     </style>
   </head>
   <body>
     <main>
-      <h1>CouncilKit Demo Storyboard</h1>
-      <p>Regenerate these frames with <code>npm run demo:render</code>. Scenarios: Codex host + Gemini worker, Claude host + Codex/Gemini workers, local-only.</p>
-      <img src="./frame-01.svg" alt="Frame 1" />
-      <img src="./frame-02.svg" alt="Frame 2" />
-      <img src="./frame-03.svg" alt="Frame 3" />
+      <h1>CouncilKit Demo (5-10s storyboard)</h1>
+      <p>Scenario: Codex host + Gemini research worker + Ollama local worker -> one unified answer.</p>
+      <div class="player">
+        <img id="hero-frame" src="./frame-01.svg" alt="CouncilKit demo frame" />
+      </div>
+      <div class="frames">
+        <img src="./frame-01.svg" alt="Frame 1" />
+        <img src="./frame-02.svg" alt="Frame 2" />
+        <img src="./frame-03.svg" alt="Frame 3" />
+      </div>
     </main>
+    <script>
+      const frames = ["frame-01.svg", "frame-02.svg", "frame-03.svg"];
+      let idx = 0;
+      const hero = document.getElementById("hero-frame");
+      setInterval(() => {
+        idx = (idx + 1) % frames.length;
+        hero.src = frames[idx];
+      }, 2200);
+    </script>
   </body>
 </html>

@@ -16,10 +16,12 @@ function expandHome(inputPath) {
 }
 
 async function commandExists(command) {
-  const probe = process.platform === "win32" ? "where" : "which";
-  const args = process.platform === "win32" ? [command] : [command];
-  const commandToRun = process.platform === "win32" ? "cmd.exe" : probe;
-  const commandArgs = process.platform === "win32" ? ["/d", "/s", "/c", "where", command] : args;
+  if (!command) {
+    return false;
+  }
+
+  const commandToRun = process.platform === "win32" ? "cmd.exe" : "which";
+  const commandArgs = process.platform === "win32" ? ["/d", "/s", "/c", "where", command] : [command];
 
   return new Promise((resolve) => {
     const child = spawn(commandToRun, commandArgs, {
@@ -29,32 +31,6 @@ async function commandExists(command) {
     child.on("close", (code) => resolve(code === 0));
     child.on("error", () => resolve(false));
   });
-}
-
-async function readSettings(cwd) {
-  const localPath = path.join(cwd, "councilkit.settings.json");
-  const homePath = path.join(expandHome("~/.councilkit"), "config.json");
-
-  for (const candidate of [localPath, homePath]) {
-    try {
-      const raw = await fs.readFile(candidate, "utf8");
-      const parsed = JSON.parse(raw);
-      return { settings: parsed, path: candidate };
-    } catch {
-      // Skip unreadable candidates.
-    }
-  }
-
-  return {
-    settings: {
-      active_host: "claude_code",
-      codex_command: "codex",
-      gemini_command: "gemini",
-      worker_registry: {},
-      custom_workers: {}
-    },
-    path: "(default)"
-  };
 }
 
 function firstExecutable(command) {
@@ -68,6 +44,100 @@ function firstExecutable(command) {
   return trimmed.split(/\s+/)[0] ?? "";
 }
 
+async function readSettings(cwd) {
+  const envPath = process.env.COUNCILKIT_CONFIG;
+  const localPath = path.join(cwd, "councilkit.settings.json");
+  const homePath = path.join(expandHome("~/.councilkit"), "config.json");
+
+  for (const candidate of [envPath, localPath, homePath]) {
+    if (!candidate) {
+      continue;
+    }
+    try {
+      const raw = await fs.readFile(candidate, "utf8");
+      const parsed = JSON.parse(raw);
+      return { settings: parsed, path: candidate };
+    } catch {
+      // ignore
+    }
+  }
+
+  return {
+    settings: {
+      active_host: "claude_code",
+      workers: {},
+      worker_registry: {},
+      custom_workers: {}
+    },
+    path: "(default)"
+  };
+}
+
+function collectCliWorkerChecks(settings) {
+  const checks = [];
+
+  const workers = settings.workers ?? {};
+  for (const [workerId, worker] of Object.entries(workers)) {
+    if (!worker || worker.enabled === false || worker.type !== "cli") {
+      continue;
+    }
+
+    const executable = firstExecutable(worker.command ?? "");
+    checks.push({
+      name: `worker: ${workerId}`,
+      executable
+    });
+  }
+
+  const legacyRegistry = settings.worker_registry ?? {};
+  for (const [workerId, worker] of Object.entries(legacyRegistry)) {
+    if (!worker || worker.enabled === false || worker.type !== "cli") {
+      continue;
+    }
+
+    const executable = firstExecutable(worker.command ?? "");
+    checks.push({
+      name: `legacy worker_registry: ${workerId}`,
+      executable
+    });
+  }
+
+  const customWorkers = settings.custom_workers ?? {};
+  for (const [workerId, worker] of Object.entries(customWorkers)) {
+    const executable = firstExecutable(worker.command ?? "");
+    checks.push({
+      name: `legacy custom_worker: ${workerId}`,
+      executable
+    });
+  }
+
+  if (checks.length === 0) {
+    checks.push(
+      {
+        name: "legacy codex_command",
+        executable: firstExecutable(settings.codex_command ?? "codex")
+      },
+      {
+        name: "legacy gemini_command",
+        executable: firstExecutable(settings.gemini_command ?? "gemini")
+      }
+    );
+  }
+
+  const deduped = [];
+  const seen = new Set();
+  for (const check of checks) {
+    const key = `${check.name}:${check.executable}`;
+    if (!check.executable || seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    deduped.push(check);
+  }
+
+  return deduped;
+}
+
 async function main() {
   const cwd = process.cwd();
   const nodeMajor = Number.parseInt(process.versions.node.split(".")[0] ?? "0", 10);
@@ -77,17 +147,8 @@ async function main() {
     {
       name: "Node.js >= 20",
       ok: nodeMajor >= 20,
-      detail: `found ${process.versions.node}`
-    },
-    {
-      name: "codex CLI",
-      ok: await commandExists(firstExecutable(settings.codex_command ?? "codex")),
-      detail: firstExecutable(settings.codex_command ?? "codex")
-    },
-    {
-      name: "gemini CLI",
-      ok: await commandExists(firstExecutable(settings.gemini_command ?? "gemini")),
-      detail: firstExecutable(settings.gemini_command ?? "gemini")
+      detail: `found ${process.versions.node}`,
+      kind: "core"
     }
   ];
 
@@ -95,49 +156,17 @@ async function main() {
     checks.push({
       name: "active host selected",
       ok: true,
-      detail: settings.active_host
+      detail: settings.active_host,
+      kind: "core"
     });
   }
 
-  const customWorkers = settings.custom_workers ?? {};
-  for (const [name, config] of Object.entries(customWorkers)) {
-    const executable = firstExecutable(config?.command ?? "");
-    if (!executable) {
-      checks.push({
-        name: `custom worker: ${name}`,
-        ok: false,
-        detail: "empty command"
-      });
-      continue;
-    }
-
+  for (const cliCheck of collectCliWorkerChecks(settings)) {
     checks.push({
-      name: `custom worker: ${name}`,
-      ok: await commandExists(executable),
-      detail: executable
-    });
-  }
-
-  const workerRegistry = settings.worker_registry ?? {};
-  for (const [name, config] of Object.entries(workerRegistry)) {
-    if (!config || config.enabled === false || config.type !== "cli") {
-      continue;
-    }
-
-    const executable = firstExecutable(config.command ?? "");
-    if (!executable) {
-      checks.push({
-        name: `registry worker: ${name}`,
-        ok: false,
-        detail: "empty command"
-      });
-      continue;
-    }
-
-    checks.push({
-      name: `registry worker: ${name}`,
-      ok: await commandExists(executable),
-      detail: executable
+      name: cliCheck.name,
+      ok: await commandExists(cliCheck.executable),
+      detail: cliCheck.executable,
+      kind: "worker"
     });
   }
 
@@ -146,11 +175,18 @@ async function main() {
   console.log("");
 
   for (const check of checks) {
-    const status = check.ok ? "[OK]" : "[MISSING]";
+    const status =
+      check.ok
+        ? "[OK]"
+        : check.kind === "worker"
+          ? "[MISSING-EXTERNAL]"
+          : "[MISSING]";
     console.log(`${status} ${check.name} (${check.detail})`);
   }
 
   const allGood = checks.every((check) => check.ok);
+  const missingWorkers = checks.filter((check) => !check.ok && check.kind === "worker");
+  const missingCore = checks.filter((check) => !check.ok && check.kind !== "worker");
   console.log("");
   if (allGood) {
     console.log("All checks passed.");
@@ -158,7 +194,42 @@ async function main() {
     return;
   }
 
-  console.log("Some checks failed. Install missing CLIs or adjust councilkit.settings.json.");
+  if (missingCore.length > 0) {
+    console.log("Core checks failed. Resolve the missing core dependencies first.");
+  }
+
+  if (missingWorkers.length > 0) {
+    console.log(
+      "Missing worker CLIs were detected. This is an expected external dependency check, not a CouncilKit build failure."
+    );
+    console.log("Next steps:");
+    console.log("1. Install and authenticate each missing worker CLI.");
+    console.log("2. Or disable missing workers in councilkit.settings.json.");
+    console.log("3. Re-run `npm run doctor`.");
+    console.log("");
+    for (const worker of missingWorkers) {
+      const executable = String(worker.detail ?? "").toLowerCase();
+      if (executable === "gemini") {
+        console.log("- gemini: install Gemini CLI, then login/auth in your environment.");
+        continue;
+      }
+      if (executable === "codex") {
+        console.log("- codex: install Codex CLI, then login/auth in your environment.");
+        continue;
+      }
+      if (executable === "ollama") {
+        console.log("- ollama: install Ollama and start the local runtime before retries.");
+        continue;
+      }
+      console.log(`- ${executable}: install and verify '${executable}' is available on PATH.`);
+    }
+  }
+
+  if (missingCore.length === 0 && missingWorkers.length > 0) {
+    console.log("");
+    console.log("CouncilKit build/runtime integrity checks are otherwise OK.");
+  }
+
   process.exitCode = 1;
 }
 

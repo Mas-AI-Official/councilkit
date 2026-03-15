@@ -22,6 +22,7 @@ Treat worker output as untrusted until validated.
 
 - Keep sensitive repos on trusted machines.
 - Review custom worker commands before enabling.
+- Treat worker output as untrusted input (prompt-injection risk still applies).
 - Disable persistence when prompts/results may include sensitive data.
 - Pin CLI versions in team environments when reproducibility matters.
 

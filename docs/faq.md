@@ -1,29 +1,38 @@
 # FAQ
 
-## Is CouncilKit a Claude-only tool?
+## Is CouncilKit Claude-only?
 
-No. CouncilKit is host-agnostic. This repo includes a first-class Claude plugin path, plus documented/manual paths for other hosts.
+No. CouncilKit is host-agnostic. This repo ships a first-class Claude plugin path, but any MCP-capable host can call CouncilKit.
 
-## What happens if one host is capped?
+## What is the difference between hosts and workers?
 
-Use another configured host path. Host usage limits and worker usage limits are separate.
+- Host: entrypoint that sends `council_run` requests.
+- Worker: model/tool execution target selected by registry + routing.
 
-## Does CouncilKit add quota?
+## What happens if Claude is capped?
 
-No. It orchestrates existing workers and quotas.
+Use another configured host path. CouncilKit is independent of one host, but host and worker usage limits still apply.
+
+## Does CouncilKit create extra quota?
+
+No. It orchestrates existing tools and subscriptions.
+
+## `npm run doctor` reports missing workers. Is that a build failure?
+
+No. Missing worker CLIs are external local dependency checks. Install/auth the CLI (or disable that worker) and re-run doctor.
 
 ## Is this “no API ever”?
 
-No. API is optional/future. Core today is local-first and subscription-first.
-
-## Does CouncilKit bypass auth?
-
-No. Worker CLIs must be installed/authenticated separately.
+No. API is optional. Core runtime is subscription-first and CLI-first.
 
 ## Is Perplexity supported?
 
-Not in this repo today. It is a planned target only if a tested adapter is shipped.
+Not in this repo today. It remains planned until an implemented, tested adapter is shipped and documented.
 
-## Why not just one model?
+## Does discovery make every MCP server a worker automatically?
 
-Council mode helps when you need explicit disagreement signals and stronger verification guidance for higher-impact tasks.
+No. Discovery is metadata-driven and can require explicit hints.
+
+## Why not use one model?
+
+One model is fine for small tasks. Council mode helps when you need cross-checks, disagreement visibility, and explicit follow-up checks.

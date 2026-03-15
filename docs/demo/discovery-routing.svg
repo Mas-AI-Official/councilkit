@@ -1,0 +1,65 @@
+<svg width="1600" height="920" viewBox="0 0 1600 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="titleGrad" x1="80" y1="40" x2="820" y2="140" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E2E8F0"/>
+      <stop offset="0.45" stop-color="#93C5FD"/>
+      <stop offset="1" stop-color="#A7F3D0"/>
+    </linearGradient>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0L12 6L0 12V0Z" fill="#7DD3FC"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0L12 6L0 12V0Z" fill="#34D399"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="920" fill="#0B1220"/>
+  <text x="80" y="88" fill="url(#titleGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="50" font-weight="700">Discovery + Routing Pipeline</text>
+  <text x="80" y="130" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="26">Metadata-driven discovery with task-aware worker selection</text>
+
+  <rect x="80" y="190" width="360" height="170" rx="16" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="116" y="244" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="700">Config Inputs</text>
+  <text x="116" y="286" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="22">- hosts + workers</text>
+  <text x="116" y="320" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="22">- MCP config paths</text>
+
+  <rect x="490" y="190" width="420" height="170" rx="16" fill="#0F172A" stroke="#38BDF8" stroke-width="2"/>
+  <text x="532" y="244" fill="#DBEAFE" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="700">Discovery</text>
+  <text x="532" y="286" fill="#BFDBFE" font-family="Consolas, Menlo, monospace" font-size="22">metadata hints + include/exclude</text>
+  <text x="532" y="320" fill="#BFDBFE" font-family="Consolas, Menlo, monospace" font-size="22">built-in + discovered + manual merge</text>
+
+  <rect x="960" y="190" width="560" height="170" rx="16" fill="#0F172A" stroke="#34D399" stroke-width="2"/>
+  <text x="1000" y="244" fill="#D1FAE5" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="700">Worker Registry</text>
+  <text x="1000" y="286" fill="#A7F3D0" font-family="Consolas, Menlo, monospace" font-size="22">id + adapter + role tags + privacy + cost + health</text>
+  <text x="1000" y="320" fill="#A7F3D0" font-family="Consolas, Menlo, monospace" font-size="22">priority + source (builtin/discovered/manual)</text>
+
+  <path d="M450 275H478" stroke="#7DD3FC" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowBlue)"/>
+  <path d="M920 275H948" stroke="#34D399" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowGreen)"/>
+
+  <rect x="80" y="430" width="300" height="160" rx="14" fill="#111827" stroke="#475569"/>
+  <text x="120" y="486" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Host Prompt</text>
+  <text x="120" y="526" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="22">task + mode</text>
+
+  <rect x="430" y="430" width="300" height="160" rx="14" fill="#0F172A" stroke="#60A5FA"/>
+  <text x="500" y="486" fill="#E0F2FE" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Routing</text>
+  <text x="472" y="526" fill="#BAE6FD" font-family="Consolas, Menlo, monospace" font-size="22">task profile + scoring</text>
+
+  <rect x="780" y="430" width="360" height="220" rx="14" fill="#111827" stroke="#475569"/>
+  <text x="900" y="482" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Workers</text>
+  <text x="834" y="522" fill="#CBD5E1" font-family="Segoe UI, Arial, sans-serif" font-size="24">Research Worker</text>
+  <text x="854" y="556" fill="#CBD5E1" font-family="Segoe UI, Arial, sans-serif" font-size="24">Coding Worker</text>
+  <text x="878" y="590" fill="#CBD5E1" font-family="Segoe UI, Arial, sans-serif" font-size="24">Local Worker</text>
+
+  <rect x="1190" y="430" width="330" height="220" rx="14" fill="#0F172A" stroke="#10B981" stroke-width="2"/>
+  <text x="1260" y="486" fill="#D1FAE5" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Synthesis</text>
+  <text x="1236" y="528" fill="#A7F3D0" font-family="Segoe UI, Arial, sans-serif" font-size="24">Unified Answer</text>
+  <text x="1240" y="562" fill="#A7F3D0" font-family="Segoe UI, Arial, sans-serif" font-size="24">Disagreements</text>
+  <text x="1260" y="596" fill="#A7F3D0" font-family="Segoe UI, Arial, sans-serif" font-size="24">Next Checks</text>
+
+  <path d="M390 510H418" stroke="#7DD3FC" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowBlue)"/>
+  <path d="M740 510H768" stroke="#7DD3FC" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowBlue)"/>
+  <path d="M1150 540H1178" stroke="#34D399" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowGreen)"/>
+
+  <rect x="80" y="730" width="1440" height="130" rx="14" fill="#111827" stroke="#334155"/>
+  <text x="112" y="786" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="26">CouncilKit keeps discovery and routing transparent with task_profile + routing_scores metadata.</text>
+  <text x="112" y="824" fill="#93C5FD" font-family="Consolas, Menlo, monospace" font-size="26">Use your subscriptions first, then add optional API workers only when needed.</text>
+</svg>

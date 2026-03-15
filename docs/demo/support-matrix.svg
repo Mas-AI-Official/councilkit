@@ -1,41 +1,69 @@
-<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1400" height="900" fill="#0B1220"/>
-  <text x="78" y="90" fill="#E2E8F0" font-family="Segoe UI, Arial, sans-serif" font-size="48" font-weight="700">Support Levels</text>
-  <text x="78" y="130" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="26">first-class / documented-manual / experimental / planned</text>
+<svg width="1400" height="940" viewBox="0 0 1400 940" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="titleGrad" x1="80" y1="44" x2="720" y2="124" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E2E8F0"/>
+      <stop offset="0.5" stop-color="#93C5FD"/>
+      <stop offset="1" stop-color="#A7F3D0"/>
+    </linearGradient>
+  </defs>
 
-  <rect x="70" y="170" width="1260" height="700" rx="18" fill="#0F172A" stroke="#334155"/>
+  <rect width="1400" height="940" fill="#0B1220"/>
+  <text x="78" y="92" fill="url(#titleGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="48" font-weight="700">Support Matrix</text>
+  <text x="78" y="132" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="25">first-class / documented-manual / experimental / planned</text>
 
-  <text x="110" y="228" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Item</text>
-  <text x="620" y="228" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Level</text>
-  <text x="860" y="228" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Notes</text>
+  <rect x="70" y="170" width="1260" height="740" rx="18" fill="#0F172A" stroke="#334155" stroke-width="2"/>
 
-  <g font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#E5E7EB">
-    <text x="110" y="292">CouncilKit Core + MCP server</text>
-    <text x="110" y="348">Claude Code plugin bundle</text>
-    <text x="110" y="404">Generic MCP host templates</text>
-    <text x="110" y="460">OpenClaw templates</text>
-    <text x="110" y="516">Antigravity custom worker docs</text>
-    <text x="110" y="572">API worker adapter path</text>
-    <text x="110" y="628">Perplexity host integration</text>
+  <rect x="90" y="196" width="1220" height="58" rx="10" fill="#111827"/>
+  <text x="120" y="234" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">Path</text>
+  <text x="620" y="234" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">Level</text>
+  <text x="830" y="234" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">Notes</text>
+
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="23" fill="#E5E7EB">
+    <text x="120" y="302">CouncilKit Core (MCP server + orchestration)</text>
+    <text x="120" y="358">Claude Code plugin bundle</text>
+    <text x="120" y="414">VS Code / Cursor / Windsurf templates</text>
+    <text x="120" y="470">OpenClaw / Zed / Neovim / JetBrains docs</text>
+    <text x="120" y="526">Ollama local worker path</text>
+    <text x="120" y="582">Community CLI worker templates</text>
+    <text x="120" y="638">Optional API worker model</text>
+    <text x="120" y="694">Perplexity host path</text>
   </g>
 
-  <g font-family="Segoe UI, Arial, sans-serif" font-size="24">
-    <text x="620" y="292" fill="#34D399">first-class</text>
-    <text x="620" y="348" fill="#34D399">first-class</text>
-    <text x="620" y="404" fill="#93C5FD">documented/manual</text>
-    <text x="620" y="460" fill="#93C5FD">documented/manual</text>
-    <text x="620" y="516" fill="#F59E0B">experimental</text>
-    <text x="620" y="572" fill="#F59E0B">experimental</text>
-    <text x="620" y="628" fill="#D1D5DB">planned</text>
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="23">
+    <text x="620" y="302" fill="#34D399">first-class</text>
+    <text x="620" y="358" fill="#34D399">first-class</text>
+    <text x="620" y="414" fill="#93C5FD">documented/manual</text>
+    <text x="620" y="470" fill="#93C5FD">documented/manual</text>
+    <text x="620" y="526" fill="#34D399">first-class</text>
+    <text x="620" y="582" fill="#F59E0B">experimental</text>
+    <text x="620" y="638" fill="#F59E0B">experimental</text>
+    <text x="620" y="694" fill="#D1D5DB">planned</text>
   </g>
 
-  <g font-family="Consolas, Menlo, monospace" font-size="20" fill="#E5E7EB">
-    <text x="860" y="292">Core runtime validated in this repo</text>
-    <text x="860" y="348">Bundled plugin assets maintained here</text>
-    <text x="860" y="404">Host-specific setup still required</text>
-    <text x="860" y="460">Version/config dependent</text>
-    <text x="860" y="516">Optional, not default</text>
-    <text x="860" y="572">Optional future extension</text>
-    <text x="860" y="628">No adapter shipped today</text>
+  <g font-family="Consolas, Menlo, monospace" font-size="19" fill="#CBD5E1">
+    <text x="830" y="302">Validated in this repository</text>
+    <text x="830" y="358">Bundled and maintained in-tree</text>
+    <text x="830" y="414">Host-specific setup required</text>
+    <text x="830" y="470">Manual wiring and local validation required</text>
+    <text x="830" y="526">Local fallback worker integrated today</text>
+    <text x="830" y="582">Template paths, not guaranteed parity</text>
+    <text x="830" y="638">Config model exists, not default runtime path</text>
+    <text x="830" y="694">No tested adapter shipped yet</text>
   </g>
+
+  <g stroke="#1F2937">
+    <line x1="90" y1="268" x2="1310" y2="268"/>
+    <line x1="90" y1="324" x2="1310" y2="324"/>
+    <line x1="90" y1="380" x2="1310" y2="380"/>
+    <line x1="90" y1="436" x2="1310" y2="436"/>
+    <line x1="90" y1="492" x2="1310" y2="492"/>
+    <line x1="90" y1="548" x2="1310" y2="548"/>
+    <line x1="90" y1="604" x2="1310" y2="604"/>
+    <line x1="90" y1="660" x2="1310" y2="660"/>
+    <line x1="90" y1="716" x2="1310" y2="716"/>
+  </g>
+
+  <rect x="90" y="764" width="1220" height="116" rx="12" fill="#111827" stroke="#334155"/>
+  <text x="122" y="820" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="24">CouncilKit does not claim universal support for every IDE/agent.</text>
+  <text x="122" y="854" fill="#93C5FD" font-family="Consolas, Menlo, monospace" font-size="24">Support level labels are explicit to keep integration claims honest.</text>
 </svg>

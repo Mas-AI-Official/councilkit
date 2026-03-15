@@ -1,12 +1,30 @@
-<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1280" height="720" fill="#0B1020"/>
-  <rect x="48" y="48" width="1184" height="624" rx="22" fill="#111A33"/>
-  <text x="86" y="118" fill="#E2E8F0" font-family="Segoe UI, Arial, sans-serif" font-size="44" font-weight="700">Codex host + Gemini worker</text>
-  <text x="86" y="176" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="26">Step 1 of 3</text>
-  <text x="86" y="250" fill="#D1D5DB" font-family="Segoe UI, Arial, sans-serif" font-size="30">Codex host path invokes CouncilKit with Gemini as selected worker.</text>
-  <rect x="86" y="300" width="1110" height="280" rx="16" fill="#0F172A" stroke="#334155"/>
-  <text x="120" y="360" fill="#34D399" font-family="Consolas, Menlo, monospace" font-size="24">/councilkit:run Task prompt</text>
-  <text x="120" y="408" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="21">workers: gemini</text>
-  <text x="120" y="454" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="21">mode: single</text>
-  <text x="120" y="500" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="21">output: agreements, disagreements, next checks</text>
+<svg width="1366" height="768" viewBox="0 0 1366 768" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="titleGrad" x1="84" y1="62" x2="760" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E2E8F0"/>
+      <stop offset="0.5" stop-color="#93C5FD"/>
+      <stop offset="1" stop-color="#A7F3D0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1366" height="768" fill="#0B1220"/>
+  <rect x="40" y="36" width="1286" height="696" rx="22" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="86" y="104" fill="url(#titleGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="46" font-weight="700">Codex Host Sends One Prompt</text>
+  <text x="86" y="146" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="25">CouncilKit receives one task and prepares orchestration metadata.</text>
+  <text x="1100" y="104" fill="#34D399" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">Step 1/3</text>
+  <rect x="86" y="186" width="1194" height="500" rx="18" fill="#0F172A" stroke="#1F2937"/>
+  <rect x="124" y="228" width="350" height="400" rx="14" fill="#111827" stroke="#334155"/>
+  <rect x="510" y="228" width="350" height="400" rx="14" fill="#111827" stroke="#334155"/>
+  <rect x="896" y="228" width="350" height="400" rx="14" fill="#111827" stroke="#334155"/>
+  <text x="152" y="286" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Host</text>
+  <text x="152" y="330" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">Codex CLI host</text>
+  <text x="152" y="362" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">task: review migration</text>
+  <text x="152" y="394" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">mode: council</text>
+  <text x="538" y="286" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">CouncilKit Core</text>
+  <text x="538" y="330" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">Discovery: worker metadata</text>
+  <text x="538" y="362" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">Routing: select best workers</text>
+  <text x="538" y="394" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">Synthesis plan prepared</text>
+  <text x="924" y="286" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Request</text>
+  <text x="924" y="330" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">workers: gemini, ollama</text>
+  <text x="924" y="362" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">output_format: json</text>
+  <text x="924" y="394" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">start parallel execution</text>
 </svg>

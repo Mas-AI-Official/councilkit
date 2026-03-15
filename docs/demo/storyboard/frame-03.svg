@@ -1,12 +1,30 @@
-<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1280" height="720" fill="#0B1020"/>
-  <rect x="48" y="48" width="1184" height="624" rx="22" fill="#111A33"/>
-  <text x="86" y="118" fill="#E2E8F0" font-family="Segoe UI, Arial, sans-serif" font-size="44" font-weight="700">Local-only fallback</text>
-  <text x="86" y="176" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="26">Step 3 of 3</text>
-  <text x="86" y="250" fill="#D1D5DB" font-family="Segoe UI, Arial, sans-serif" font-size="30">No vendor worker required: local worker returns a unified answer.</text>
-  <rect x="86" y="300" width="1110" height="280" rx="16" fill="#0F172A" stroke="#334155"/>
-  <text x="120" y="360" fill="#34D399" font-family="Consolas, Menlo, monospace" font-size="24">/councilkit:run Task prompt</text>
-  <text x="120" y="408" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="21">workers: local</text>
-  <text x="120" y="454" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="21">mode: single</text>
-  <text x="120" y="500" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="21">output: agreements, disagreements, next checks</text>
+<svg width="1366" height="768" viewBox="0 0 1366 768" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="titleGrad" x1="84" y1="62" x2="760" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E2E8F0"/>
+      <stop offset="0.5" stop-color="#93C5FD"/>
+      <stop offset="1" stop-color="#A7F3D0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1366" height="768" fill="#0B1220"/>
+  <rect x="40" y="36" width="1286" height="696" rx="22" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="86" y="104" fill="url(#titleGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="46" font-weight="700">One Unified Answer Returns</text>
+  <text x="86" y="146" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="25">CouncilKit merges outputs into one final response package.</text>
+  <text x="1100" y="104" fill="#34D399" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">Step 3/3</text>
+  <rect x="86" y="186" width="1194" height="500" rx="18" fill="#0F172A" stroke="#1F2937"/>
+  <rect x="124" y="228" width="350" height="400" rx="14" fill="#111827" stroke="#334155"/>
+  <rect x="510" y="228" width="350" height="400" rx="14" fill="#111827" stroke="#334155"/>
+  <rect x="896" y="228" width="350" height="400" rx="14" fill="#111827" stroke="#334155"/>
+  <text x="152" y="286" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Synthesis</text>
+  <text x="152" y="330" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">combined summary</text>
+  <text x="152" y="362" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">high-confidence path</text>
+  <text x="152" y="394" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">cross-worker rationale</text>
+  <text x="538" y="286" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Disagreements</text>
+  <text x="538" y="330" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">rollback threshold mismatch</text>
+  <text x="538" y="362" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">canary pace differs</text>
+  <text x="538" y="394" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">evidence to resolve</text>
+  <text x="924" y="286" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Next Checks</text>
+  <text x="924" y="330" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">run rollback drill</text>
+  <text x="924" y="362" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">validate migration diff</text>
+  <text x="924" y="394" fill="#CBD5E1" font-family="Consolas, Menlo, monospace" font-size="21">re-run council</text>
 </svg>

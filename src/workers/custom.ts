@@ -20,15 +20,14 @@ function buildArgs(command: string, task: string): { executable: string; args: s
   };
 }
 
-export function getCustomWorker(
+export function createCliWorkerAdapter(
   name: string,
-  settings: CouncilKitSettings
-): WorkerAdapter | undefined {
-  const config = settings.custom_workers?.[name];
-  if (!config) {
-    return undefined;
+  config: {
+    command: string;
+    timeout_ms?: number;
+    output_format?: "auto" | "json" | "text";
   }
-
+): WorkerAdapter {
   return {
     name,
     async run(context: WorkerContext, runner: CommandRunner): Promise<WorkerResult> {
@@ -55,4 +54,16 @@ export function getCustomWorker(
       };
     }
   };
+}
+
+export function getCustomWorker(
+  name: string,
+  settings: CouncilKitSettings
+): WorkerAdapter | undefined {
+  const config = settings.custom_workers?.[name];
+  if (!config) {
+    return undefined;
+  }
+
+  return createCliWorkerAdapter(name, config);
 }

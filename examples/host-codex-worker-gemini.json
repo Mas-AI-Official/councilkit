@@ -7,13 +7,19 @@
       "command": "codex"
     }
   },
-  "worker_registry": {
+  "workers": {
     "gemini": {
       "type": "cli",
       "enabled": true,
       "command": "gemini",
+      "role_tags": ["research", "analysis", "general"],
+      "cost_hint": "subscription",
+      "privacy_mode": "remote",
       "priority": 10
     }
+  },
+  "discovery": {
+    "enabled": false
   },
   "routing": {
     "default_mode": "single",

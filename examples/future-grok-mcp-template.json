@@ -1,0 +1,20 @@
+{
+  "discovery": {
+    "enabled": true,
+    "mcp_config_paths": [".mcp.json"],
+    "auto_register_mcp_workers": true,
+    "require_worker_metadata": true,
+    "mcp_worker_hints": {
+      "grok_server": {
+        "id": "grok_worker",
+        "display_name": "Grok-like MCP Worker",
+        "adapter_type": "mcp",
+        "role_tags": ["research", "analysis", "general"],
+        "privacy_mode": "remote",
+        "cost_hint": "subscription",
+        "enabled": false,
+        "notes": "Template only. Not an implemented or verified first-class adapter in this repo."
+      }
+    }
+  }
+}

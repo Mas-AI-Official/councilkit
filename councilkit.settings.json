@@ -1,10 +1,9 @@
 {
-  "active_host": "claude_code",
+  "active_host": "generic_mcp_host",
   "hosts": {
     "claude_code": {
       "type": "mcp_host",
-      "enabled": true,
-      "notes": "First-class path in this repository."
+      "enabled": true
     },
     "codex_cli": {
       "type": "cli_host",
@@ -21,73 +20,136 @@
       "enabled": true
     }
   },
-  "worker_registry": {
+  "workers": {
     "codex": {
       "type": "cli",
-      "enabled": true,
       "command": "codex",
-      "priority": 10,
-      "output_format": "json"
+      "role_tags": [
+        "coding",
+        "review",
+        "general"
+      ],
+      "strengths": [
+        "refactoring",
+        "code generation"
+      ],
+      "cost_hint": "subscription",
+      "privacy_mode": "remote",
+      "enabled": true,
+      "priority": 30
     },
     "gemini": {
       "type": "cli",
-      "enabled": true,
       "command": "gemini",
-      "priority": 20,
-      "output_format": "json"
+      "role_tags": [
+        "research",
+        "analysis",
+        "general"
+      ],
+      "strengths": [
+        "research",
+        "comparative analysis"
+      ],
+      "cost_hint": "subscription",
+      "privacy_mode": "remote",
+      "enabled": true,
+      "priority": 10
     },
     "local": {
       "type": "cli",
-      "enabled": false,
-      "priority": 90
+      "command": "ollama run qwen3:latest \"{task}\"",
+      "role_tags": [
+        "local",
+        "general",
+        "drafting",
+        "analysis"
+      ],
+      "strengths": [
+        "privacy-sensitive local fallback",
+        "offline-friendly local reasoning"
+      ],
+      "cost_hint": "free",
+      "privacy_mode": "local",
+      "enabled": true,
+      "priority": 20
     },
-    "openclaw": {
+    "ollama": {
       "type": "cli",
+      "command": "ollama run qwen3:latest \"{task}\"",
+      "role_tags": [
+        "local",
+        "coding",
+        "drafting",
+        "general"
+      ],
+      "strengths": [
+        "local fallback",
+        "privacy-sensitive tasks"
+      ],
+      "cost_hint": "free",
+      "privacy_mode": "local",
       "enabled": false,
-      "command": "openclaw \"{task}\"",
       "priority": 40,
-      "output_format": "auto",
-      "notes": "Community path"
-    },
-    "antigravity": {
-      "type": "cli",
-      "enabled": false,
-      "command": "antigravity run \"{task}\"",
-      "priority": 50,
-      "output_format": "auto",
-      "notes": "Experimental path"
-    },
-    "future_api_worker": {
-      "type": "api",
-      "enabled": false,
-      "endpoint": "https://example.invalid/api",
-      "model": "example-model",
-      "notes": "Planned, not active in current runtime"
+      "notes": "Dedicated ollama worker. The local worker is the default compatibility alias."
+    }
+  },
+  "discovery": {
+    "enabled": true,
+    "mcp_config_paths": [
+      ".mcp.json"
+    ],
+    "auto_register_mcp_workers": true,
+    "auto_register_cli_workers": true,
+    "require_worker_metadata": true,
+    "include": [],
+    "exclude": [],
+    "disabled_workers": [],
+    "mcp_worker_hints": {
+      "example_worker": {
+        "id": "example_worker",
+        "display_name": "Example MCP Worker",
+        "adapter_type": "mcp",
+        "role_tags": [
+          "general"
+        ],
+        "cost_hint": "unknown",
+        "privacy_mode": "mixed",
+        "enabled": false
+      }
     }
   },
   "routing": {
     "default_mode": "council",
     "fallback_priority": [
-      "codex",
-      "gemini"
+      "gemini",
+      "local",
+      "codex"
     ],
-    "allow_single_worker": true
+    "allow_single_worker": true,
+    "max_workers_per_task": 3,
+    "prefer_local_for_sensitive_tasks": true,
+    "prefer_subscription_before_api": true
   },
   "codex_command": "codex",
   "gemini_command": "gemini",
-  "local_command": null,
+  "local_command": "ollama run qwen3:latest",
+  "ollama_command": "ollama",
+  "ollama_model": "qwen3:latest",
   "default_workers": [
-    "codex",
-    "gemini"
+    "gemini",
+    "local",
+    "codex"
   ],
   "timeouts": {
     "codex_ms": 300000,
     "gemini_ms": 300000,
-    "local_ms": 180000
+    "local_ms": 180000,
+    "ollama_ms": 180000
   },
   "codex": {
     "use_output_schema": true
   },
+  "worker_registry": {},
   "custom_workers": {},
   "persistence": {
     "enabled": true,

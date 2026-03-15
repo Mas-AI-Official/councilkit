@@ -11,11 +11,19 @@ const root = path.resolve(path.join(__dirname, ".."));
 const distServerPath = path.join(root, "dist", "server.js");
 const fakeWorkerPath = path.join(root, "scripts", "fake-worker.mjs");
 const requiredDemoAssets = [
+  "assets/logo.svg",
+  "assets/social-card.svg",
+  "assets/social-preview.png",
   "docs/demo/workflow.svg",
   "docs/demo/host-worker-model.svg",
+  "docs/demo/discovery-routing.svg",
   "docs/demo/support-matrix.svg",
   "docs/demo/output-example.svg",
-  "docs/demo/social-card.svg"
+  "docs/demo/social-card.svg",
+  "docs/demo/export/frame-01.png",
+  "docs/demo/export/frame-02.png",
+  "docs/demo/export/frame-03.png",
+  "docs/demo/export/demo-preview.png"
 ];
 
 function run(command, args, options = {}) {
@@ -100,7 +108,19 @@ function assertNodeVersion() {
 async function runSyntheticCouncilRequest() {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "councilkit-smoke-"));
   const configPath = path.join(tempDir, "config.json");
+  const mcpPath = path.join(tempDir, "mcp.config.json");
   const quotedWorker = fakeWorkerPath.replaceAll("\\", "/");
+
+  const mcpConfig = {
+    mcpServers: {
+      synthetic_hint_worker: {
+        command: "node",
+        args: [quotedWorker]
+      }
+    }
+  };
+
+  await fs.writeFile(mcpPath, `${JSON.stringify(mcpConfig, null, 2)}\n`, "utf8");
 
   const config = {
     active_host: "generic_mcp_host",
@@ -110,19 +130,42 @@ async function runSyntheticCouncilRequest() {
         enabled: true
       }
     },
-    worker_registry: {
+    workers: {
       smoke_local: {
         type: "cli",
         enabled: true,
         command: `node "${quotedWorker}" "{task}"`,
         timeout_ms: 30_000,
         output_format: "json",
-        priority: 1
+        priority: 1,
+        role_tags: ["general", "local"],
+        privacy_mode: "local",
+        cost_hint: "free"
+      }
+    },
+    discovery: {
+      enabled: true,
+      mcp_config_paths: [mcpPath],
+      auto_register_mcp_workers: true,
+      auto_register_cli_workers: true,
+      require_worker_metadata: true,
+      include: [],
+      exclude: [],
+      mcp_worker_hints: {
+        synthetic_hint_worker: {
+          id: "discovered_cli",
+          adapter_type: "cli",
+          command: `node "${quotedWorker}" "{task}"`,
+          role_tags: ["analysis", "general"],
+          privacy_mode: "local",
+          cost_hint: "free",
+          enabled: true
+        }
       }
     },
     routing: {
       default_mode: "single",
-      fallback_priority: ["smoke_local"],
+      fallback_priority: ["discovered_cli", "smoke_local"],
       allow_single_worker: true
     },
     persistence: {
@@ -144,7 +187,7 @@ async function runSyntheticCouncilRequest() {
       {
         task: "synthetic smoke task",
         mode: "single",
-        workers: ["smoke_local"],
+        workers: ["discovered_cli"],
         output_format: "json"
       },
       root
@@ -154,8 +197,8 @@ async function runSyntheticCouncilRequest() {
       throw new Error(`Synthetic council request failed: ${JSON.stringify(result.results[0])}`);
     }
 
-    if (result.results[0]?.worker_name !== "smoke_local") {
-      throw new Error("Worker registration mapping failed for smoke_local.");
+    if (result.results[0]?.worker_name !== "discovered_cli") {
+      throw new Error("Discovered worker flow did not resolve the expected worker.");
     }
   } finally {
     if (previousConfig === undefined) {

@@ -1,0 +1,10 @@
+{
+  "routing": {
+    "default_mode": "council",
+    "fallback_priority": ["gemini", "local", "codex"],
+    "max_workers_per_task": 2,
+    "prefer_subscription_before_api": true,
+    "prefer_local_for_sensitive_tasks": true
+  },
+  "default_workers": ["gemini", "local", "codex"]
+}

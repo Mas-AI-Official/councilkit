@@ -10,11 +10,16 @@ Add this to `councilkit.settings.json`:
 
 ```json
 {
-  "custom_workers": {
+  "workers": {
     "openclaw": {
+      "type": "cli",
+      "enabled": true,
       "command": "openclaw \"{task}\"",
-      "timeout_ms": 300000,
-      "output_format": "auto"
+      "output_format": "auto",
+      "role_tags": ["general"],
+      "cost_hint": "unknown",
+      "privacy_mode": "remote",
+      "priority": 60
     }
   }
 }
@@ -43,3 +48,17 @@ Use [`mcp-server-template.json`](./mcp-server-template.json) as a base snippet.
 
 - OpenClaw integration behavior depends on the OpenClaw version and wrappers you use.
 - CouncilKit does not include OpenClaw auth logic; OpenClaw must already be installed and authenticated separately.
+- Legacy `custom_workers` remains supported for backward compatibility.
+
+## What Is Tested In This Repo
+
+- Template JSON files are maintained and smoke-checked for path correctness.
+- CouncilKit runtime behavior is tested independently; host-specific OpenClaw behavior is not CI-verified.
+
+## Known-Good Local Test Steps
+
+1. Run `npm ci && npm run build`.
+2. Register CouncilKit MCP server in your OpenClaw config.
+3. Restart OpenClaw.
+4. Run a prompt that explicitly calls `council_run`.
+5. Verify output includes `results`, `disagreements`, and `recommended_next_checks`.
