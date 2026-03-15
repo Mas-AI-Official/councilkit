@@ -2,10 +2,12 @@
 
 ## Positioning
 
+- Host-agnostic model council for MCP, CLI, and optional API workers.
+- One prompt. Many models. One answer.
+- MCP-native. CLI-capable. API-optional.
 - Bring your own host. Bring your own workers.
-- Use the AI subscriptions you already pay for, together.
-- CouncilKit turns MCP and CLI tools into one model council.
-- Use your subscriptions first. API optional.
+- Use your subscriptions first. Add APIs only when you want or need them.
+- For many workflows, direct API setup is optional, not required.
 
 ## Release Recommendation
 
@@ -18,18 +20,22 @@
 
 ## Suggested GitHub About Line
 
-Host-agnostic model council runtime for MCP and CLI workers. Bring your own host, bring your own workers.
+Host-agnostic model council for MCP, CLI, and optional API workers. Route work across Codex, Gemini, Ollama, and custom workers, then return one unified answer.
 
 ## Suggested Short Tagline
 
 One prompt. Many models. One answer.
+
+## Suggested Technical Tagline
+
+MCP-native. CLI-capable. API-optional.
 
 ## Suggested Release Notes Draft
 
 ### Highlights
 
 - Host-agnostic runtime architecture (hosts and workers are separate concepts)
-- Worker registry with metadata-driven discovery
+- Worker registry with metadata-driven discovery (not fixed to built-in workers only)
 - Task-aware routing heuristics and worker scoring
 - First-class Ollama local worker path
 - Claude plugin bundle + documented/manual integration templates
@@ -39,6 +45,7 @@ One prompt. Many models. One answer.
 
 - Worker CLIs must be installed/authenticated separately
 - CouncilKit orchestrates existing tools; it does not create extra quota
+- Provider and host quotas still apply
 - Some integration paths remain documented/manual or experimental by design
 
 ## Launch Channels

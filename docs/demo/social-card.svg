@@ -15,9 +15,9 @@
   </text>
   <text x="140" y="322" fill="url(#titleGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="700">One prompt. Many models. One answer.</text>
   <text x="140" y="392" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="42">Bring your own host. Bring your own workers.</text>
-  <text x="140" y="452" fill="#34D399" font-family="Segoe UI, Arial, sans-serif" font-size="40">Use your subscriptions first. API optional.</text>
+  <text x="140" y="452" fill="#34D399" font-family="Segoe UI, Arial, sans-serif" font-size="40">Use subscriptions first. Add APIs only when needed.</text>
 
   <rect x="140" y="500" width="1320" height="200" rx="18" fill="#111827" stroke="#1F2937"/>
-  <text x="188" y="574" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="34">Host -> CouncilKit Core -> Discovery + Routing -> Workers</text>
+  <text x="188" y="574" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="34">Host -> CouncilKit Core -> MCP / CLI / optional API Workers</text>
   <text x="188" y="634" fill="#A7F3D0" font-family="Consolas, Menlo, monospace" font-size="34">Unified Answer: Synthesis + Disagreements + Next Checks</text>
 </svg>

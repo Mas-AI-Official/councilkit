@@ -1,1 +1,1 @@
-Host-agnostic model council runtime across MCP and CLI workers. Bring your own host, bring your own workers. Use subscriptions first, API optional.
+Host-agnostic model council for MCP, CLI, and optional API workers. Route work across Codex, Gemini, Ollama, and custom workers, then return one unified answer.

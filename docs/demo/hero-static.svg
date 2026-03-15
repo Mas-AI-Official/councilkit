@@ -1,0 +1,31 @@
+<svg width="1280" height="620" viewBox="0 0 1280 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="heroSubStatic" x1="100" y1="250" x2="900" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E2E8F0"/>
+      <stop offset="0.45" stop-color="#93C5FD"/>
+      <stop offset="1" stop-color="#A7F3D0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="620" fill="#0B1220"/>
+  <rect x="48" y="40" width="1184" height="540" rx="26" fill="#111827" stroke="#334155"/>
+
+  <text x="96" y="170" font-family="Segoe UI, Arial, sans-serif" font-size="90" font-weight="800">
+    <tspan fill="#2563EB">Council</tspan><tspan fill="#10B981">Kit</tspan>
+  </text>
+
+  <text x="96" y="232" fill="url(#heroSubStatic)" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700">One prompt. Many models. One answer.</text>
+  <text x="96" y="278" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="30">Host-agnostic model council for MCP, CLI, and optional API workers.</text>
+  <text x="96" y="322" fill="#34D399" font-family="Segoe UI, Arial, sans-serif" font-size="30">Use your subscriptions first. Add APIs only when you want or need them.</text>
+
+  <rect x="96" y="364" width="1088" height="164" rx="14" fill="#0F172A" stroke="#1E293B"/>
+  <rect x="126" y="394" width="220" height="48" rx="10" fill="#111827" stroke="#334155"/>
+  <text x="162" y="425" fill="#E2E8F0" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="600">Host</text>
+  <rect x="400" y="394" width="268" height="48" rx="10" fill="#111827" stroke="#334155"/>
+  <text x="436" y="425" fill="#E2E8F0" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="600">CouncilKit Core</text>
+  <rect x="722" y="394" width="312" height="48" rx="10" fill="#111827" stroke="#334155"/>
+  <text x="754" y="425" fill="#E2E8F0" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="600">Workers (MCP / CLI / API)</text>
+  <path d="M346 418H400" stroke="#64748B" stroke-width="2"/>
+  <path d="M668 418H722" stroke="#64748B" stroke-width="2"/>
+  <text x="126" y="488" fill="#A7F3D0" font-family="Consolas, Menlo, monospace" font-size="22">Unified Answer: results + synthesis + disagreements + next checks</text>
+</svg>

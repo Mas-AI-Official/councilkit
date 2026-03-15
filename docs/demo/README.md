@@ -4,6 +4,8 @@ This folder contains launch/demo visuals:
 
 - `workflow.svg`
 - `discovery-routing.svg`
+- `hero.svg`
+- `hero-static.svg`
 - `social-card.svg`
 - `host-worker-model.svg`
 - `support-matrix.svg`

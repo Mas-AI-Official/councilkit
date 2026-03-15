@@ -1,6 +1,35 @@
 <svg width="920" height="220" viewBox="0 0 920 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ckShine" x1="0" y1="0" x2="220" y2="220" gradientUnits="userSpaceOnUse" gradientTransform="translate(-920 0)">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.45" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.36"/>
+      <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+      <animateTransform
+        attributeName="gradientTransform"
+        type="translate"
+        from="-920 0"
+        to="920 0"
+        dur="8s"
+        repeatCount="indefinite" />
+    </linearGradient>
+    <filter id="kitGlow" x="-20%" y="-80%" width="160%" height="260%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
   <rect width="920" height="220" rx="20" fill="#0B1220"/>
   <text x="52" y="142" font-family="Segoe UI, Arial, sans-serif" font-size="94" font-weight="800">
     <tspan fill="#2563EB">Council</tspan><tspan fill="#10B981">Kit</tspan>
+  </text>
+  <text x="52" y="142" font-family="Segoe UI, Arial, sans-serif" font-size="94" font-weight="800" fill="url(#ckShine)">
+    CouncilKit
+  </text>
+  <text x="374" y="142" font-family="Segoe UI, Arial, sans-serif" font-size="94" font-weight="800" fill="#10B981" opacity="0.2" filter="url(#kitGlow)">
+    Kit
   </text>
 </svg>

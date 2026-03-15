@@ -1,0 +1,1 @@
+MCP-native. CLI-capable. API-optional.

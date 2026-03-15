@@ -1,13 +1,27 @@
 <svg width="1200" height="320" viewBox="0 0 1200 320" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="subGrad" x1="320" y1="210" x2="820" y2="250" gradientUnits="userSpaceOnUse">
+    <linearGradient id="subGrad" x1="320" y1="210" x2="840" y2="246" gradientUnits="userSpaceOnUse">
       <stop stop-color="#93C5FD"/>
       <stop offset="1" stop-color="#A7F3D0"/>
+    </linearGradient>
+    <linearGradient id="logoShine" x1="0" y1="0" x2="220" y2="220" gradientUnits="userSpaceOnUse" gradientTransform="translate(-1200 0)">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.45" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+      <animateTransform
+        attributeName="gradientTransform"
+        type="translate"
+        from="-1200 0"
+        to="1200 0"
+        dur="8s"
+        repeatCount="indefinite" />
     </linearGradient>
   </defs>
 
   <rect width="1200" height="320" rx="24" fill="#0B1220"/>
-  <rect x="30" y="40" width="240" height="240" rx="26" fill="#111827"/>
+  <rect x="30" y="40" width="240" height="240" rx="26" fill="#111827" stroke="#334155"/>
   <circle cx="150" cy="160" r="78" fill="#1E293B" stroke="#334155" stroke-width="2"/>
   <path d="M150 90L210 126V194L150 230L90 194V126L150 90Z" fill="#2563EB"/>
   <path d="M150 120L186 142V178L150 200L114 178V142L150 120Z" fill="#10B981"/>
@@ -15,5 +29,8 @@
   <text x="320" y="180" font-family="Segoe UI, Arial, sans-serif" font-size="98" font-weight="800">
     <tspan fill="#2563EB">Council</tspan><tspan fill="#10B981">Kit</tspan>
   </text>
-  <text x="324" y="232" fill="url(#subGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="600">One prompt. Many models. One answer.</text>
+  <text x="320" y="180" font-family="Segoe UI, Arial, sans-serif" font-size="98" font-weight="800" fill="url(#logoShine)">
+    CouncilKit
+  </text>
+  <text x="324" y="232" fill="url(#subGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="600">MCP-native. CLI-capable. API-optional.</text>
 </svg>

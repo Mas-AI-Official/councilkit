@@ -4,6 +4,10 @@
 
 No. CouncilKit is host-agnostic. This repo ships a first-class Claude plugin path, but any MCP-capable host can call CouncilKit.
 
+## Is CouncilKit limited to fixed workers?
+
+No. Built-in workers exist, but CouncilKit also supports discovered and manually registered workers across MCP, CLI, and optional API worker types.
+
 ## What is the difference between hosts and workers?
 
 - Host: entrypoint that sends `council_run` requests.
@@ -16,6 +20,10 @@ Use another configured host path. CouncilKit is independent of one host, but hos
 ## Does CouncilKit create extra quota?
 
 No. It orchestrates existing tools and subscriptions.
+
+## Can CouncilKit avoid APIs forever?
+
+No absolute claim. API workers are optional, not forbidden. For many workflows, direct API setup is optional, not required.
 
 ## `npm run doctor` reports missing workers. Is that a build failure?
 

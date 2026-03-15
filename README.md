@@ -1,25 +1,33 @@
 # CouncilKit
 
-![CouncilKit](./assets/logo.svg)
+![CouncilKit Wordmark](./assets/wordmark.svg)
 
 ## One prompt. Many models. One answer.
 
-CouncilKit is a host-agnostic model council that routes work across MCP, CLI, and optional API workers, then returns one unified answer.
+CouncilKit is a host-agnostic model council for MCP, CLI, and optional API workers.
+It routes tasks across selected workers and returns one unified answer.
+It is not Claude-only and it is not limited to fixed built-in workers.
 
 Bring your own host. Bring your own workers.
+MCP-native. CLI-capable. API-optional.
 
-![CouncilKit Workflow](./docs/demo/workflow.svg)
+Use your subscriptions first. Add APIs only when you want or need them.
+For many workflows, direct API setup is optional, not required.
+
+Provider and host quotas still apply.
+
+![CouncilKit Hero](./docs/demo/hero.svg)
+
+Static fallback: [docs/demo/hero-static.svg](./docs/demo/hero-static.svg)
 
 ### Get Started
 
 ```bash
 npm ci
 npm run build
-npm run smoke
-claude --plugin-dir ./councilkit
+npm run setup
+npm run doctor
 ```
-
-Use your subscriptions first. API optional.
 
 ## Interactive Setup (Recommended)
 
@@ -72,7 +80,21 @@ CouncilKit adds a single orchestration layer so one prompt can produce:
 - An MCP-native orchestration runtime (`council-hub`)
 - A host-agnostic middle layer (not tied to one editor/agent)
 - A worker registry with discovery + routing heuristics
-- A bundled Claude Code plugin path in this repo
+- A runtime that can combine MCP servers, CLI workers, local runtimes, and optional API adapters
+- A bundled Claude Code plugin path in this repo (without making Claude the only host path)
+
+## What Makes CouncilKit Different?
+
+Many workflows force everything through one provider or one model path.
+CouncilKit keeps hosts and workers separate, so one request can combine:
+
+- MCP-connected workers
+- CLI workers (for example Codex CLI and Gemini CLI)
+- local runtimes like Ollama
+- optional API workers when you choose to add them
+
+This is practical for teams already paying for subscriptions and running local tooling.
+You can start subscription-first and local-first, then add API adapters only if and when they help.
 
 ## What CouncilKit Is Not
 
@@ -99,10 +121,11 @@ Workflow visuals:
 - Host: where the user starts work (Claude Code, generic MCP host, CLI wrapper).
 - Worker: execution target CouncilKit calls (Codex CLI, Gemini CLI, Ollama, custom CLI/MCP/API worker definitions).
 - CouncilKit Core: the orchestration layer between host and workers.
+- Worker selection is registry + routing based, not locked to a fixed worker list.
 
 Details: [docs/architecture.md](./docs/architecture.md)
 
-## Supported Today / Experimental / Planned
+## Supported Today / Manual / Experimental / Planned
 
 ### First-Class
 
@@ -110,7 +133,7 @@ Details: [docs/architecture.md](./docs/architecture.md)
 - Claude Code plugin bundle in this repo
 - Built-in CLI workers: `codex`, `gemini`, `local`, `ollama`
 
-### Documented/Manual
+### Manual (Documented Templates)
 
 - VS Code, Cursor, Windsurf, OpenClaw templates
 - Zed, Neovim, JetBrains manual integration docs
@@ -342,8 +365,10 @@ CouncilKit is host-agnostic, but each host and worker still has its own limits a
 
 ## Use Your Subscriptions First, API Optional
 
-CouncilKit is designed for subscription-first and local CLI-first workflows.
-API workers are optional and should be treated as an extension path, not the default requirement.
+CouncilKit is designed for subscription-first and local-runtime-first workflows.
+Use your subscriptions first. Add APIs only when you want or need them.
+For many workflows, direct API setup is optional, not required.
+Host and provider quotas still apply.
 
 ## Perplexity / Future Hosts
 
