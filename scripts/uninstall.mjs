@@ -3,7 +3,10 @@
 import os from "node:os";
 import path from "node:path";
 
-import { removeMcpServerConfig } from "./lib/host-config.mjs";
+import {
+  LEGACY_MERGELOOP_SERVER_NAMES,
+  removeMcpServerConfig
+} from "./lib/host-config.mjs";
 
 function expandHome(inputPath) {
   if (inputPath === "~") {
@@ -65,6 +68,7 @@ async function main() {
   const result = await removeMcpServerConfig({
     filePath: targetPath,
     serverName: "mergeloop",
+    legacyServerNames: LEGACY_MERGELOOP_SERVER_NAMES,
     dryRun: flags.dryRun
   });
 

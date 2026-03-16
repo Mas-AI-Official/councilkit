@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
+export const LEGACY_MERGELOOP_SERVER_NAMES = ["councilkit", "council-hub", "council_hub"];
+
 function isPlainObject(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -29,6 +31,13 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
+function dedupeServerNames(serverName, legacyServerNames = []) {
+  return [
+    serverName,
+    ...legacyServerNames.filter((name) => typeof name === "string" && name && name !== serverName)
+  ];
+}
+
 export function normalizeMcpDocument(input) {
   const document = isPlainObject(input) ? clone(input) : {};
 
@@ -47,16 +56,29 @@ export function buildBackupPath(filePath, now = new Date()) {
   return `${filePath}.bak.${timestamp}`;
 }
 
-export function mergeMcpServerEntry(document, serverName, serverEntry) {
+export function mergeMcpServerEntry(document, serverName, serverEntry, legacyServerNames = []) {
   const normalized = normalizeMcpDocument(document);
+  const serverNames = dedupeServerNames(serverName, legacyServerNames);
   const existing = normalized.mcpServers?.[serverName];
+  let changed = false;
+  let legacyFound = false;
+
+  for (const legacyName of serverNames.slice(1)) {
+    if (!normalized.mcpServers?.[legacyName]) {
+      continue;
+    }
+    legacyFound = true;
+    delete normalized.mcpServers[legacyName];
+    changed = true;
+  }
 
   if (existing && equivalent(existing, serverEntry)) {
     return {
-      changed: false,
+      changed,
       merged: normalized,
       existed: true,
-      duplicated: true
+      duplicated: !legacyFound,
+      migratedLegacy: legacyFound
     };
   }
 
@@ -64,21 +86,28 @@ export function mergeMcpServerEntry(document, serverName, serverEntry) {
   return {
     changed: true,
     merged: normalized,
-    existed: Boolean(existing),
-    duplicated: false
+    existed: Boolean(existing || legacyFound),
+    duplicated: false,
+    migratedLegacy: legacyFound
   };
 }
 
-export function removeMcpServerEntry(document, serverName) {
+export function removeMcpServerEntry(document, serverName, legacyServerNames = []) {
   const normalized = normalizeMcpDocument(document);
-  if (!normalized.mcpServers?.[serverName]) {
+  const serverNames = dedupeServerNames(serverName, legacyServerNames);
+  const existingNames = serverNames.filter((name) => normalized.mcpServers?.[name]);
+
+  if (existingNames.length === 0) {
     return {
       changed: false,
       merged: normalized
     };
   }
 
-  delete normalized.mcpServers[serverName];
+  for (const name of existingNames) {
+    delete normalized.mcpServers[name];
+  }
+
   return {
     changed: true,
     merged: normalized
@@ -118,11 +147,12 @@ export async function upsertMcpServerConfig({
   filePath,
   serverName,
   serverEntry,
+  legacyServerNames = [],
   dryRun = false,
   now = new Date()
 }) {
   const { exists, value } = await readJsonOrEmpty(filePath);
-  const mergeResult = mergeMcpServerEntry(value, serverName, serverEntry);
+  const mergeResult = mergeMcpServerEntry(value, serverName, serverEntry, legacyServerNames);
 
   if (!mergeResult.changed) {
     return {
@@ -162,6 +192,7 @@ export async function upsertMcpServerConfig({
 export async function removeMcpServerConfig({
   filePath,
   serverName,
+  legacyServerNames = [],
   dryRun = false,
   now = new Date()
 }) {
@@ -176,7 +207,7 @@ export async function removeMcpServerConfig({
     };
   }
 
-  const removeResult = removeMcpServerEntry(value, serverName);
+  const removeResult = removeMcpServerEntry(value, serverName, legacyServerNames);
   if (!removeResult.changed) {
     return {
       filePath,

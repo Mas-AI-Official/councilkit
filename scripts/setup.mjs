@@ -6,7 +6,11 @@ import path from "node:path";
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline/promises";
 
-import { buildBackupPath, upsertMcpServerConfig } from "./lib/host-config.mjs";
+import {
+  buildBackupPath,
+  LEGACY_MERGELOOP_SERVER_NAMES,
+  upsertMcpServerConfig
+} from "./lib/host-config.mjs";
 
 function expandHome(inputPath) {
   if (inputPath === "~") {
@@ -397,31 +401,44 @@ function buildSettingsPatch({
 
 async function writeSettingsConfig({ cwd, patch, dryRun, now }) {
   const settingsPath = path.join(cwd, "mergeloop.settings.json");
-  const { exists, value } = await readJsonIfExists(settingsPath);
-  const merged = mergeObjects(value, patch);
-  const changed = JSON.stringify(value) !== JSON.stringify(merged);
+  const legacySettingsPath = path.join(cwd, "councilkit.settings.json");
+
+  let basePath = settingsPath;
+  let existing = await readJsonIfExists(settingsPath);
+  if (!existing.exists) {
+    const legacy = await readJsonIfExists(legacySettingsPath);
+    if (legacy.exists) {
+      existing = legacy;
+      basePath = legacySettingsPath;
+    }
+  }
+
+  const merged = mergeObjects(existing.value, patch);
+  const changed = JSON.stringify(existing.value) !== JSON.stringify(merged) || basePath !== settingsPath;
   if (!changed) {
     return {
       settingsPath,
       changed: false,
       wrote: false,
-      backupPath: undefined
+      backupPath: undefined,
+      migratedLegacyPath: undefined
     };
   }
 
-  const backupPath = exists ? buildBackupPath(settingsPath, now) : undefined;
+  const backupPath = existing.exists ? buildBackupPath(basePath, now) : undefined;
   if (dryRun) {
     return {
       settingsPath,
       changed: true,
       wrote: false,
       backupPath,
-      dryRun: true
+      dryRun: true,
+      migratedLegacyPath: basePath !== settingsPath ? basePath : undefined
     };
   }
 
-  if (exists && backupPath) {
-    await fs.copyFile(settingsPath, backupPath);
+  if (existing.exists && backupPath) {
+    await fs.copyFile(basePath, backupPath);
   }
   await fs.writeFile(settingsPath, `${JSON.stringify(merged, null, 2)}\n`, "utf8");
   return {
@@ -429,7 +446,8 @@ async function writeSettingsConfig({ cwd, patch, dryRun, now }) {
     changed: true,
     wrote: true,
     backupPath,
-    dryRun: false
+    dryRun: false,
+    migratedLegacyPath: basePath !== settingsPath ? basePath : undefined
   };
 }
 
@@ -469,17 +487,18 @@ async function maybeConfigureHostMcp({
   const result = await upsertMcpServerConfig({
     filePath: host.path,
     serverName: "mergeloop",
+    legacyServerNames: LEGACY_MERGELOOP_SERVER_NAMES,
     serverEntry,
     dryRun
   });
 
   return {
     hostConfigPath: host.path,
-    hostConfigBackup: result.backupPath,
-    changed: result.changed,
-    wrote: result.wrote,
-    note: result.changed
-      ? "MergeLoop MCP server entry merged."
+      hostConfigBackup: result.backupPath,
+      changed: result.changed,
+      wrote: result.wrote,
+      note: result.changed
+      ? "MergeLoop MCP server entry merged. Legacy CouncilKit MCP ids are replaced automatically if present."
       : "MergeLoop MCP server entry already present; no change."
   };
 }
@@ -498,6 +517,9 @@ function printSummary({
   process.stdout.write(`Enabled workers: ${selectedWorkers.join(", ")}\n`);
   process.stdout.write(`Routing style: ${routingStyle}\n`);
   process.stdout.write(`MergeLoop config: ${settingsResult.settingsPath}\n`);
+  if (settingsResult.migratedLegacyPath) {
+    process.stdout.write(`Migrated legacy config source: ${settingsResult.migratedLegacyPath}\n`);
+  }
   if (settingsResult.backupPath) {
     process.stdout.write(`MergeLoop config backup: ${settingsResult.backupPath}\n`);
   }

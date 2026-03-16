@@ -1,6 +1,11 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { normalizePath } from "./path-utils.js";
+const LEGACY_ENV_KEYS = ["COUNCILKIT_CONFIG"];
+const LEGACY_CONFIG_PATHS = [
+    "councilkit.settings.json",
+    "~/.councilkit/config.json"
+];
 const DEFAULT_SETTINGS = {
     active_host: "generic_mcp_host",
     hosts: {
@@ -263,10 +268,16 @@ function normalizeRuntimeSettings(settings) {
     return normalized;
 }
 export async function loadSettings(cwd = process.cwd()) {
-    const candidatePaths = [
+    const envCandidates = [
         process.env.MERGELOOP_CONFIG,
+        ...LEGACY_ENV_KEYS.map((key) => process.env[key])
+    ].filter((value) => Boolean(value));
+    const candidatePaths = [
+        ...envCandidates,
         path.join(cwd, "mergeloop.settings.json"),
-        normalizePath("~/.mergeloop/config.json")
+        path.join(cwd, LEGACY_CONFIG_PATHS[0]),
+        normalizePath("~/.mergeloop/config.json"),
+        normalizePath(LEGACY_CONFIG_PATHS[1])
     ].filter((value) => Boolean(value));
     for (const candidate of candidatePaths) {
         try {

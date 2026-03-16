@@ -45,4 +45,5 @@ If you want full rollback, replace modified file with backup:
 ## Notes
 
 - Rollback only touches config files that setup/uninstall modified.
+- Uninstall also removes legacy CouncilKit MCP ids such as `councilkit` and `council-hub` from supported host config files.
 - Worker CLI install/auth state is separate from config rollback.

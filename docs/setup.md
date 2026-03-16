@@ -18,12 +18,14 @@ npm run setup
 ## What Setup Configures
 
 - merges/writes `mergeloop.settings.json`
+- migrates from legacy `councilkit.settings.json` if that file is present locally
 - lets you select:
   - host target
   - workers
   - routing style
   - persistence directory
 - optionally auto-merges `mergeloop` MCP entry into selected host config
+- replaces legacy CouncilKit MCP ids in supported host config files when present
 - creates timestamped backups before modifying existing files
 
 ## Safe Modes

@@ -62,6 +62,18 @@ Docs:
 - [docs/host-autoconfig.md](./docs/host-autoconfig.md)
 - [docs/rollback.md](./docs/rollback.md)
 
+## Migration From CouncilKit
+
+MergeLoop is the new name for CouncilKit.
+
+- new installs should use `mergeloop.settings.json`, `MERGELOOP_CONFIG`, `~/.mergeloop/config.json`, and the MCP server id `mergeloop`
+- legacy aliases are still recognized for migration:
+  - `councilkit.settings.json`
+  - `COUNCILKIT_CONFIG`
+  - `~/.councilkit/config.json`
+  - legacy MCP ids such as `councilkit` and `council-hub`
+- rerunning `npm run setup` will write the new MergeLoop naming and replace legacy MCP ids in supported host config files
+
 ## Why This Exists
 
 Most teams already pay for multiple model subscriptions and run local tools, but still operate them one-at-a-time.

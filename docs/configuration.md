@@ -6,6 +6,12 @@ MergeLoop loads settings from:
 2. `./mergeloop.settings.json`
 3. `~/.mergeloop/config.json`
 
+Legacy aliases are still recognized during migration:
+
+- `COUNCILKIT_CONFIG`
+- `./councilkit.settings.json`
+- `~/.councilkit/config.json`
+
 ## Core Schema
 
 ```json

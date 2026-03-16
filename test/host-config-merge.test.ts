@@ -5,6 +5,7 @@ import path from "node:path";
 import test from "node:test";
 
 import {
+  LEGACY_MERGELOOP_SERVER_NAMES,
   mergeMcpServerEntry,
   removeMcpServerEntry,
   upsertMcpServerConfig,
@@ -54,6 +55,36 @@ test("mergeMcpServerEntry avoids duplicate write for equivalent entry", () => {
 
   assert.equal(result.changed, false);
   assert.equal(result.duplicated, true);
+});
+
+test("mergeMcpServerEntry migrates legacy CouncilKit server ids to mergeloop", () => {
+  const source = {
+    mcpServers: {
+      councilkit: {
+        command: "node",
+        args: ["dist/server.js"]
+      },
+      "council-hub": {
+        command: "node",
+        args: ["dist/server.js"]
+      }
+    }
+  };
+
+  const result = mergeMcpServerEntry(
+    source,
+    "mergeloop",
+    {
+      command: "node",
+      args: ["dist/server.js"]
+    },
+    LEGACY_MERGELOOP_SERVER_NAMES
+  );
+
+  assert.equal(result.changed, true);
+  assert.ok(result.merged.mcpServers.mergeloop);
+  assert.equal(result.merged.mcpServers.councilkit, undefined);
+  assert.equal(result.merged.mcpServers["council-hub"], undefined);
 });
 
 test("upsertMcpServerConfig creates a backup when existing config changes", async () => {
@@ -153,6 +184,31 @@ test("removeMcpServerEntry removes only target server and preserves others", () 
   const result = removeMcpServerEntry(source, "mergeloop");
   assert.equal(result.changed, true);
   assert.equal(result.merged.mcpServers.mergeloop, undefined);
+  assert.ok(result.merged.mcpServers.cloudrun);
+});
+
+test("removeMcpServerEntry removes legacy CouncilKit server ids too", () => {
+  const source = {
+    mcpServers: {
+      councilkit: {
+        command: "node",
+        args: ["dist/server.js"]
+      },
+      "council-hub": {
+        command: "node",
+        args: ["dist/server.js"]
+      },
+      cloudrun: {
+        command: "npx",
+        args: ["-y", "@google-cloud/cloud-run-mcp"]
+      }
+    }
+  };
+
+  const result = removeMcpServerEntry(source, "mergeloop", LEGACY_MERGELOOP_SERVER_NAMES);
+  assert.equal(result.changed, true);
+  assert.equal(result.merged.mcpServers.councilkit, undefined);
+  assert.equal(result.merged.mcpServers["council-hub"], undefined);
   assert.ok(result.merged.mcpServers.cloudrun);
 });
 

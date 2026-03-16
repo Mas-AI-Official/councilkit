@@ -23,8 +23,9 @@ When auto-configuring a host JSON file, setup:
 1. reads existing JSON config
 2. preserves unrelated entries
 3. upserts `mcpServers.mergeloop` with `node .../dist/server.js`
-4. avoids duplicate MergeLoop entry if equivalent entry already exists
-5. creates timestamped backup before any file rewrite
+4. replaces legacy CouncilKit ids such as `councilkit` and `council-hub` when present
+5. avoids duplicate MergeLoop entry if equivalent entry already exists
+6. creates timestamped backup before any file rewrite
 
 ## Claims and Limits
 

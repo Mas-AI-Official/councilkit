@@ -45,11 +45,16 @@ function firstExecutable(command) {
 }
 
 async function readSettings(cwd) {
-  const envPath = process.env.MERGELOOP_CONFIG;
-  const localPath = path.join(cwd, "mergeloop.settings.json");
-  const homePath = path.join(expandHome("~/.mergeloop"), "config.json");
+  const candidates = [
+    process.env.MERGELOOP_CONFIG,
+    process.env.COUNCILKIT_CONFIG,
+    path.join(cwd, "mergeloop.settings.json"),
+    path.join(cwd, "councilkit.settings.json"),
+    path.join(expandHome("~/.mergeloop"), "config.json"),
+    path.join(expandHome("~/.councilkit"), "config.json")
+  ];
 
-  for (const candidate of [envPath, localPath, homePath]) {
+  for (const candidate of candidates) {
     if (!candidate) {
       continue;
     }

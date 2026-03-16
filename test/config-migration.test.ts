@@ -6,10 +6,10 @@ import test from "node:test";
 
 import { loadSettings } from "../src/core/config.js";
 
-async function createFixture(config: unknown): Promise<string> {
+async function createFixture(config: unknown, fileName = "mergeloop.settings.json"): Promise<string> {
   const directory = await fs.mkdtemp(path.join(os.tmpdir(), "mergeloop-config-test-"));
   await fs.writeFile(
-    path.join(directory, "mergeloop.settings.json"),
+    path.join(directory, fileName),
     `${JSON.stringify(config, null, 2)}\n`,
     "utf8"
   );
@@ -80,4 +80,57 @@ test("worker command/timeouts override legacy runtime fields for built-ins", asy
   assert.equal(settings.timeouts.gemini_ms, 124000);
   assert.equal(settings.timeouts.local_ms, 125000);
   assert.equal(settings.timeouts.ollama_ms, 126000);
+});
+
+test("loads legacy councilkit.settings.json as a fallback alias", async () => {
+  const cwd = await createFixture(
+    {
+      active_host: "generic_mcp_host",
+      persistence: {
+        enabled: true,
+        directory: "~/.mergeloop/runs"
+      }
+    },
+    "councilkit.settings.json"
+  );
+
+  const loaded = await loadSettings(cwd);
+  assert.equal(path.basename(loaded.configPath ?? ""), "councilkit.settings.json");
+  assert.equal(loaded.settings.active_host, "generic_mcp_host");
+});
+
+test("loads legacy COUNCILKIT_CONFIG env var as a fallback alias", async () => {
+  const cwd = await fs.mkdtemp(path.join(os.tmpdir(), "mergeloop-config-env-test-"));
+  const legacyPath = path.join(cwd, "legacy-config.json");
+  await fs.writeFile(
+    legacyPath,
+    `${JSON.stringify(
+      {
+        active_host: "gemini_cli",
+        persistence: {
+          enabled: true,
+          directory: "~/.mergeloop/runs"
+        }
+      },
+      null,
+      2
+    )}\n`,
+    "utf8"
+  );
+
+  const previous = process.env.COUNCILKIT_CONFIG;
+  delete process.env.MERGELOOP_CONFIG;
+  process.env.COUNCILKIT_CONFIG = legacyPath;
+
+  try {
+    const loaded = await loadSettings(cwd);
+    assert.equal(loaded.configPath, legacyPath);
+    assert.equal(loaded.settings.active_host, "gemini_cli");
+  } finally {
+    if (previous === undefined) {
+      delete process.env.COUNCILKIT_CONFIG;
+    } else {
+      process.env.COUNCILKIT_CONFIG = previous;
+    }
+  }
 });
