@@ -1,69 +1,98 @@
-<svg width="1400" height="940" viewBox="0 0 1400 940" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="1400" height="1080" viewBox="0 0 1400 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="titleGrad" x1="80" y1="44" x2="720" y2="124" gradientUnits="userSpaceOnUse">
+    <linearGradient id="titleGrad" x1="80" y1="48" x2="780" y2="132" gradientUnits="userSpaceOnUse">
       <stop stop-color="#E2E8F0"/>
       <stop offset="0.5" stop-color="#93C5FD"/>
       <stop offset="1" stop-color="#A7F3D0"/>
     </linearGradient>
+    <linearGradient id="panelGrad" x1="60" y1="150" x2="1340" y2="1040" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
   </defs>
 
-  <rect width="1400" height="940" fill="#0B1220"/>
-  <text x="78" y="92" fill="url(#titleGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="48" font-weight="700">Support Matrix</text>
-  <text x="78" y="132" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="25">first-class / documented-manual / experimental / planned</text>
+  <rect width="1400" height="1080" fill="#0B1220"/>
+  <text x="78" y="94" fill="url(#titleGrad)" font-family="Segoe UI, Arial, sans-serif" font-size="50" font-weight="700">IDE + Host Support Matrix</text>
+  <text x="78" y="136" fill="#93C5FD" font-family="Segoe UI, Arial, sans-serif" font-size="24">Clear support levels for Claude Code, Gemini, Cursor, Windsurf, OpenClaw, VS Code, Zed, Neovim, and JetBrains.</text>
 
-  <rect x="70" y="170" width="1260" height="740" rx="18" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+  <rect x="60" y="170" width="1280" height="870" rx="24" fill="url(#panelGrad)" stroke="#334155" stroke-width="2"/>
 
-  <rect x="90" y="196" width="1220" height="58" rx="10" fill="#111827"/>
-  <text x="120" y="234" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">Path</text>
-  <text x="620" y="234" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">Level</text>
-  <text x="830" y="234" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">Notes</text>
+  <rect x="86" y="202" width="168" height="38" rx="18" fill="#143024" stroke="#10B981"/>
+  <text x="116" y="227" fill="#D1FAE5" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">FIRST-CLASS</text>
+  <rect x="274" y="202" width="256" height="38" rx="18" fill="#11253A" stroke="#60A5FA"/>
+  <text x="298" y="227" fill="#DBEAFE" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">DOCUMENTED / MANUAL</text>
+  <rect x="550" y="202" width="164" height="38" rx="18" fill="#2E220E" stroke="#F59E0B"/>
+  <text x="580" y="227" fill="#FDE68A" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">EXPERIMENTAL</text>
+  <rect x="734" y="202" width="126" height="38" rx="18" fill="#1F2937" stroke="#94A3B8"/>
+  <text x="764" y="227" fill="#E2E8F0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">PLANNED</text>
 
-  <g font-family="Segoe UI, Arial, sans-serif" font-size="23" fill="#E5E7EB">
-    <text x="120" y="302">MergeLoop Core (MCP server + orchestration)</text>
-    <text x="120" y="358">Claude Code plugin bundle</text>
-    <text x="120" y="414">VS Code / Cursor / Windsurf templates</text>
-    <text x="120" y="470">OpenClaw / Zed / Neovim / JetBrains docs</text>
-    <text x="120" y="526">Ollama local worker path</text>
-    <text x="120" y="582">Community CLI worker templates</text>
-    <text x="120" y="638">Optional API worker model</text>
-    <text x="120" y="694">Perplexity host path</text>
-  </g>
+  <text x="90" y="288" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Direct Paths</text>
+  <text x="90" y="320" fill="#94A3B8" font-family="Segoe UI, Arial, sans-serif" font-size="20">Best paths if you want setup help or tested repo-level behavior first.</text>
 
-  <g font-family="Segoe UI, Arial, sans-serif" font-size="23">
-    <text x="620" y="302" fill="#34D399">first-class</text>
-    <text x="620" y="358" fill="#34D399">first-class</text>
-    <text x="620" y="414" fill="#93C5FD">documented/manual</text>
-    <text x="620" y="470" fill="#93C5FD">documented/manual</text>
-    <text x="620" y="526" fill="#34D399">first-class</text>
-    <text x="620" y="582" fill="#F59E0B">experimental</text>
-    <text x="620" y="638" fill="#F59E0B">experimental</text>
-    <text x="620" y="694" fill="#D1D5DB">planned</text>
-  </g>
+  <rect x="90" y="350" width="292" height="170" rx="18" fill="#10211A" stroke="#10B981" stroke-width="2"/>
+  <text x="118" y="394" fill="#D1FAE5" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Claude Code</text>
+  <text x="118" y="428" fill="#A7F3D0" font-family="Consolas, Menlo, monospace" font-size="18">first-class plugin bundle</text>
+  <text x="118" y="464" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="19">Bundled plugin, skill, and</text>
+  <text x="118" y="492" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="19">MCP startup path maintained</text>
+  <text x="118" y="520" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="19">directly in this repo.</text>
 
-  <g font-family="Consolas, Menlo, monospace" font-size="19" fill="#CBD5E1">
-    <text x="830" y="302">Validated in this repository</text>
-    <text x="830" y="358">Bundled and maintained in-tree</text>
-    <text x="830" y="414">Host-specific setup required</text>
-    <text x="830" y="470">Manual wiring and local validation required</text>
-    <text x="830" y="526">Local fallback worker integrated today</text>
-    <text x="830" y="582">Template paths, not guaranteed parity</text>
-    <text x="830" y="638">Config model exists, not default runtime path</text>
-    <text x="830" y="694">No tested adapter shipped yet</text>
-  </g>
+  <rect x="398" y="350" width="292" height="170" rx="18" fill="#10211A" stroke="#10B981" stroke-width="2"/>
+  <text x="418" y="394" fill="#D1FAE5" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Gemini</text>
+  <text x="418" y="428" fill="#A7F3D0" font-family="Consolas, Menlo, monospace" font-size="18">first-class auto-config</text>
+  <text x="418" y="464" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="17">setup --host=gemini</text>
+  <text x="418" y="492" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="19">Writes the MergeLoop MCP entry</text>
+  <text x="418" y="520" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="19">into Gemini settings.</text>
 
-  <g stroke="#1F2937">
-    <line x1="90" y1="268" x2="1310" y2="268"/>
-    <line x1="90" y1="324" x2="1310" y2="324"/>
-    <line x1="90" y1="380" x2="1310" y2="380"/>
-    <line x1="90" y1="436" x2="1310" y2="436"/>
-    <line x1="90" y1="492" x2="1310" y2="492"/>
-    <line x1="90" y1="548" x2="1310" y2="548"/>
-    <line x1="90" y1="604" x2="1310" y2="604"/>
-    <line x1="90" y1="660" x2="1310" y2="660"/>
-    <line x1="90" y1="716" x2="1310" y2="716"/>
-  </g>
+  <rect x="706" y="350" width="292" height="170" rx="18" fill="#11253A" stroke="#60A5FA" stroke-width="2"/>
+  <text x="734" y="394" fill="#DBEAFE" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Generic MCP Host</text>
+  <text x="734" y="428" fill="#BAE6FD" font-family="Consolas, Menlo, monospace" font-size="18">safe repo-local first run</text>
+  <text x="734" y="464" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="18">Writes local `.mcp.json` and</text>
+  <text x="734" y="490" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="18">`mergeloop.settings.json` for</text>
+  <text x="734" y="516" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="18">a safe first end-to-end test.</text>
 
-  <rect x="90" y="764" width="1220" height="116" rx="12" fill="#111827" stroke="#334155"/>
-  <text x="122" y="820" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="24">MergeLoop does not claim universal support for every IDE/agent.</text>
-  <text x="122" y="854" fill="#93C5FD" font-family="Consolas, Menlo, monospace" font-size="24">Support level labels are explicit to keep integration claims honest.</text>
+  <rect x="1014" y="350" width="256" height="170" rx="18" fill="#2E220E" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1018" y="394" fill="#FDE68A" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Antigravity</text>
+  <text x="1018" y="428" fill="#FDE68A" font-family="Consolas, Menlo, monospace" font-size="18">experimental auto-config</text>
+  <text x="1018" y="464" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="18">Supported config path, but</text>
+  <text x="1018" y="490" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="18">host behavior still needs</text>
+  <text x="1018" y="516" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="18">local verification.</text>
+
+  <text x="90" y="590" fill="#E5E7EB" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">IDE Templates</text>
+  <text x="90" y="622" fill="#94A3B8" font-family="Segoe UI, Arial, sans-serif" font-size="20">Recommended path: run generic setup first, then copy/adapt the MergeLoop MCP entry into the host template below.</text>
+
+  <rect x="90" y="652" width="240" height="126" rx="16" fill="#11253A" stroke="#60A5FA" stroke-width="2"/>
+  <text x="156" y="700" fill="#DBEAFE" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">VS Code</text>
+  <text x="134" y="736" fill="#BFDBFE" font-family="Segoe UI, Arial, sans-serif" font-size="18">template + local check</text>
+
+  <rect x="348" y="652" width="240" height="126" rx="16" fill="#11253A" stroke="#60A5FA" stroke-width="2"/>
+  <text x="414" y="700" fill="#DBEAFE" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Cursor</text>
+  <text x="392" y="736" fill="#BFDBFE" font-family="Segoe UI, Arial, sans-serif" font-size="18">template + local check</text>
+
+  <rect x="606" y="652" width="240" height="126" rx="16" fill="#11253A" stroke="#60A5FA" stroke-width="2"/>
+  <text x="664" y="700" fill="#DBEAFE" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Windsurf</text>
+  <text x="650" y="736" fill="#BFDBFE" font-family="Segoe UI, Arial, sans-serif" font-size="18">template + local check</text>
+
+  <rect x="864" y="652" width="240" height="126" rx="16" fill="#11253A" stroke="#60A5FA" stroke-width="2"/>
+  <text x="914" y="700" fill="#DBEAFE" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">OpenClaw</text>
+  <text x="892" y="736" fill="#BFDBFE" font-family="Segoe UI, Arial, sans-serif" font-size="17">guide + template + local check</text>
+
+  <rect x="90" y="796" width="240" height="126" rx="16" fill="#11253A" stroke="#60A5FA" stroke-width="2"/>
+  <text x="172" y="844" fill="#DBEAFE" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Zed</text>
+  <text x="134" y="880" fill="#BFDBFE" font-family="Segoe UI, Arial, sans-serif" font-size="18">template + local check</text>
+
+  <rect x="348" y="796" width="240" height="126" rx="16" fill="#11253A" stroke="#60A5FA" stroke-width="2"/>
+  <text x="408" y="844" fill="#DBEAFE" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Neovim</text>
+  <text x="404" y="880" fill="#BFDBFE" font-family="Segoe UI, Arial, sans-serif" font-size="18">guide + local check</text>
+
+  <rect x="606" y="796" width="240" height="126" rx="16" fill="#11253A" stroke="#60A5FA" stroke-width="2"/>
+  <text x="654" y="844" fill="#DBEAFE" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">JetBrains</text>
+  <text x="660" y="880" fill="#BFDBFE" font-family="Segoe UI, Arial, sans-serif" font-size="18">guide + runtime check</text>
+
+  <rect x="864" y="796" width="406" height="126" rx="16" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="896" y="844" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="22">Recommended IDE flow</text>
+  <text x="896" y="874" fill="#93C5FD" font-family="Consolas, Menlo, monospace" font-size="18">setup --host=generic  ->  copy MCP entry</text>
+  <text x="896" y="898" fill="#93C5FD" font-family="Consolas, Menlo, monospace" font-size="18">into host config  ->  reload host</text>
+
+  <rect x="90" y="948" width="1180" height="62" rx="16" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="124" y="987" fill="#E5E7EB" font-family="Consolas, Menlo, monospace" font-size="20">Honest support model: tested in-repo where possible, template/manual where the host still needs local verification.</text>
 </svg>

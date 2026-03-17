@@ -2,6 +2,44 @@
 
 MergeLoop is host-agnostic, but integration paths have explicit support levels.
 
+## Pick Your Host Path
+
+### First-class / direct
+
+- Claude Code:
+  - bundled plugin path in this repo
+  - best if you want the in-repo plugin flow
+- Gemini:
+  - `npm run setup -- --yes --host=gemini --workers=gemini,ollama,codex`
+  - writes MergeLoop into `~/.gemini/settings.json`
+- Generic MCP host:
+  - `npm run setup -- --yes --host=generic --workers=gemini,ollama,codex`
+  - best safe first test because it writes local repo config only
+
+### Documented/manual IDE paths
+
+- Cursor
+- Windsurf
+- OpenClaw
+- VS Code
+- Zed
+- Neovim
+- JetBrains
+
+Recommended flow for these hosts:
+
+1. Run `npm run setup -- --yes --host=generic --workers=gemini,ollama,codex`
+2. Copy the generated MergeLoop MCP server entry from local `.mcp.json`
+3. Paste/adapt that entry into the host-specific template in this folder
+4. Reload the host and run a direct `mergeloop_run` prompt
+
+### Experimental
+
+- Antigravity:
+  - `npm run setup -- --yes --host=antigravity --workers=gemini,ollama,codex`
+  - useful if you already use that config path locally
+  - still marked experimental because host-specific behavior is not CI-verified here
+
 ## Support Levels
 
 - `first-class`: maintained and tested in this repo
@@ -33,6 +71,12 @@ Host-specific docs/templates:
 - Zed: [`zed/README.md`](./zed/README.md), [`zed/settings.json`](./zed/settings.json)
 - Neovim: [`neovim/README.md`](./neovim/README.md)
 - JetBrains: [`jetbrains/README.md`](./jetbrains/README.md)
+
+Recommended quick links:
+
+- Cursor: [`cursor/README.md`](./cursor/README.md)
+- Windsurf: [`windsurf/README.md`](./windsurf/README.md)
+- OpenClaw: [`openclaw/README.md`](./openclaw/README.md)
 
 ## Known-Good Local Test Steps (documented/manual paths)
 
